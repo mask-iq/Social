@@ -48,8 +48,9 @@ a{color:inherit;text-decoration:none;}
 .search-bar input::placeholder{color:#cfe3dc;}
 .search-bar input:focus{outline:none;}
 .nav-desktop{display:flex;gap:6px;background:rgba(255,255,255,.09);padding:5px;border-radius:11px;}
-.nav-desktop button{padding:9px 14px;border-radius:8px;color:#dceee7;font-weight:700;font-size:13.5px;transition:.2s;background:transparent;}
+.nav-desktop button{padding:9px 14px;border-radius:8px;color:#dceee7;font-weight:700;font-size:13.5px;transition:.2s;background:transparent;display:flex;align-items:center;gap:6px;}
 .nav-desktop button.active{background:#fff;color:var(--emerald);}
+.nav-inline-badge{background:var(--gold);color:#3a2a05;font-size:10.5px;font-weight:800;min-width:18px;height:18px;border-radius:999px;display:flex;align-items:center;justify-content:center;padding:0 4px;}
 .container{max-width:1180px;margin:0 auto;padding:26px 20px 60px;}
 
 .hero{background:linear-gradient(120deg,var(--emerald) 0%,#123f3d 55%,#123028 100%);border-radius:22px;padding:30px 34px;color:#f4ead0;margin-bottom:22px;position:relative;overflow:hidden;}
@@ -82,6 +83,7 @@ a{color:inherit;text-decoration:none;}
 .post-media{width:100%;aspect-ratio:1/1;background:linear-gradient(135deg,#eee3c6,#f6efdd);display:flex;align-items:center;justify-content:center;font-size:70px;overflow:hidden;}
 [data-theme="dark"] .post-media{background:linear-gradient(135deg,#1c3a35,#173330);}
 .post-media img{width:100%;height:100%;object-fit:cover;}
+.post-media video{width:100%;height:100%;object-fit:cover;}
 .post-actions{display:flex;align-items:center;gap:14px;padding:12px 14px 4px;font-size:22px;}
 .post-actions button{color:var(--ink);transition:.15s;}
 .post-actions button.liked{color:var(--danger);}
@@ -106,31 +108,34 @@ a{color:inherit;text-decoration:none;}
 .explore-tile{aspect-ratio:1/1;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,#eee3c6,#f6efdd);display:flex;align-items:center;justify-content:center;font-size:40px;cursor:pointer;position:relative;}
 [data-theme="dark"] .explore-tile{background:linear-gradient(135deg,#1c3a35,#173330);}
 .explore-tile img{width:100%;height:100%;object-fit:cover;}
+.explore-tile video{width:100%;height:100%;object-fit:cover;}
 .explore-tile .reel-mark{position:absolute;top:6px;left:6px;background:rgba(0,0,0,.5);color:#fff;font-size:14px;padding:2px 6px;border-radius:6px;}
 
 /* NOTIFICATIONS */
-.notif-row{display:flex;align-items:center;gap:12px;padding:12px 6px;border-bottom:1px solid var(--line);}
+.notif-row{display:flex;align-items:center;gap:12px;padding:12px 6px;border-bottom:1px solid var(--line);cursor:pointer;}
 .notif-row.unread{background:rgba(201,150,44,.08);border-radius:10px;}
 .notif-ic{width:40px;height:40px;border-radius:50%;background:var(--ivory);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
 .notif-text{font-size:13px;line-height:1.6;flex:1;}
 .notif-time{font-size:11px;color:var(--ink-soft);white-space:nowrap;}
 
-/* MESSAGES */
-.msg-layout{display:grid;grid-template-columns:280px 1fr;gap:18px;min-height:60vh;}
+/* MESSAGES — Instagram style */
+.msg-layout{display:grid;grid-template-columns:320px 1fr;gap:0;min-height:70vh;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);background:var(--paper);}
 @media(max-width:760px){.msg-layout{grid-template-columns:1fr;}}
-.conv-list{background:var(--paper);border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden;}
-.conv-item{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line);cursor:pointer;transition:.15s;}
+.conv-list{background:var(--paper);overflow-y:auto;border-left:1px solid var(--line);max-height:78vh;}
+.conv-list-head{padding:14px 16px;font-weight:800;font-size:15px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--paper);}
+.conv-item{display:flex;align-items:center;gap:12px;padding:11px 14px;cursor:pointer;transition:.15s;}
 .conv-item:hover,.conv-item.active{background:var(--ivory);}
 .conv-item .cname{font-size:13.5px;font-weight:700;}
-.conv-item .clast{font-size:11.5px;color:var(--ink-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:150px;}
-.chat-panel{background:var(--paper);border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow);display:flex;flex-direction:column;}
-.chat-head{padding:14px 16px;border-bottom:1px solid var(--line);font-weight:800;font-size:14px;}
-.chat-body{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:8px;max-height:50vh;}
-.msg-bubble{max-width:70%;padding:9px 13px;border-radius:14px;font-size:13px;line-height:1.6;}
-.msg-mine{align-self:flex-start;background:var(--emerald);color:#fff;border-bottom-left-radius:4px;}
-.msg-theirs{align-self:flex-end;background:var(--ivory);border-bottom-right-radius:4px;}
-.chat-input-row{display:flex;gap:8px;padding:12px 14px;border-top:1px solid var(--line);}
-.chat-input-row input{flex:1;padding:10px 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--ivory);color:var(--ink);font-size:13px;}
+.conv-item .clast{font-size:11.5px;color:var(--ink-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px;}
+.chat-panel{background:var(--paper);display:flex;flex-direction:column;}
+.chat-head{padding:13px 18px;border-bottom:1px solid var(--line);font-weight:800;font-size:14.5px;display:flex;align-items:center;gap:10px;}
+.chat-body{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:6px;max-height:60vh;}
+.msg-bubble{max-width:68%;padding:10px 15px;border-radius:20px;font-size:13.5px;line-height:1.55;word-break:break-word;}
+.msg-mine{align-self:flex-start;background:linear-gradient(135deg,var(--emerald),var(--emerald-2));color:#fff;border-bottom-left-radius:6px;}
+.msg-theirs{align-self:flex-end;background:var(--ivory);color:var(--ink);border-bottom-right-radius:6px;}
+.chat-input-row{display:flex;gap:8px;padding:14px 16px;border-top:1px solid var(--line);align-items:center;}
+.chat-input-row input{flex:1;padding:11px 16px;border-radius:999px;border:1.5px solid var(--line);background:var(--ivory);color:var(--ink);font-size:13.5px;}
+.chat-send-btn{width:40px;height:40px;border-radius:50%;background:var(--emerald);color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 
 /* PROFILE */
 .profile-head{display:flex;gap:24px;align-items:center;margin-bottom:22px;flex-wrap:wrap;}
@@ -204,6 +209,7 @@ input.auth-input:focus,select.auth-input:focus,textarea.auth-input:focus{border-
 .btn.plum{background:var(--plum);}
 .btn.outline{background:transparent;color:var(--emerald);box-shadow:none;border:1.5px solid var(--emerald);}
 .btn.small{padding:9px 14px;font-size:13.5px;width:auto;}
+.btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
 .form-note{font-size:12px;color:var(--ink-soft);margin-top:14px;line-height:1.7;text-align:center;}
 .brand-mark{width:52px;height:52px;border-radius:50% 50% 6px 6px;background:linear-gradient(140deg,var(--gold),var(--gold-soft));display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:14px;}
 .upload-row{display:flex;gap:10px;align-items:center;}
@@ -219,6 +225,20 @@ input.auth-input:focus,select.auth-input:focus,textarea.auth-input:focus{border-
 .comments-list{max-height:220px;overflow-y:auto;margin:10px 0;}
 .comment-item{font-size:12.5px;padding:6px 0;border-bottom:1px dashed var(--line);}
 .comment-item b{margin-left:5px;}
+
+/* upload dropzone (instagram-like) */
+.dropzone{border:2px dashed var(--line);border-radius:14px;padding:22px 14px;text-align:center;cursor:pointer;transition:.2s;background:var(--ivory);}
+.dropzone:hover,.dropzone.drag{border-color:var(--gold);background:#fbf1dd;}
+[data-theme="dark"] .dropzone:hover,[data-theme="dark"] .dropzone.drag{background:#3a2c10;}
+.dropzone .dz-icon{font-size:34px;margin-bottom:8px;}
+.dropzone .dz-text{font-size:13.5px;font-weight:700;color:var(--ink);}
+.dropzone .dz-sub{font-size:11.5px;color:var(--ink-soft);margin-top:4px;}
+.media-preview-wrap{position:relative;border-radius:14px;overflow:hidden;background:#000;margin-bottom:6px;}
+.media-preview-wrap img,.media-preview-wrap video{width:100%;max-height:340px;object-fit:contain;background:#000;display:block;}
+.media-preview-wrap .mp-remove{position:absolute;top:8px;left:8px;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;}
+.upload-progress{height:5px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:8px;}
+.upload-progress i{display:block;height:100%;width:0%;background:var(--gold);transition:width .15s;}
+.compress-note{font-size:11.5px;color:var(--ink-soft);margin-top:6px;display:flex;align-items:center;gap:6px;}
 
 /* story viewer */
 .story-viewer-overlay{position:fixed;inset:0;background:#000;z-index:120;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:.2s;}
@@ -260,13 +280,14 @@ input.auth-input:focus,select.auth-input:focus,textarea.auth-input:focus{border-
       <button class="nav-btn active" data-view="feed">الرئيسية</button>
       <button class="nav-btn" data-view="explore">استكشاف</button>
       <button class="nav-btn" data-view="reels">ريلز</button>
-      <button class="nav-btn" data-view="messages">الرسائل</button>
-      <button class="nav-btn" data-view="notifications">الإشعارات</button>
+      <button class="nav-btn" data-view="messages">الرسائل<span class="nav-inline-badge hidden" id="navMsgBadge">0</span></button>
+      <button class="nav-btn" data-view="notifications">الإشعارات<span class="nav-inline-badge hidden" id="navNotifBadge">0</span></button>
       <button class="nav-btn" data-view="profile">حسابي</button>
       <button class="nav-btn hidden" id="navAdmin" data-view="admin">لوحة التحكم</button>
     </div>
     <div class="topbar-actions">
       <button class="icon-btn" id="themeToggle" title="تبديل الوضع">🌙</button>
+      <button class="icon-btn" id="notifBellBtn" title="الإشعارات"><span>🔔</span><span class="badge-count hidden" id="bellBadge">0</span></button>
       <button class="icon-btn" id="authToggleBtn" title="الحساب">👤</button>
     </div>
   </div>
@@ -310,13 +331,13 @@ input.auth-input:focus,select.auth-input:focus,textarea.auth-input:focus{border-
     <div id="viewMessages" class="hidden">
       <h2 class="display" style="font-size:26px;margin-bottom:14px;">الرسائل</h2>
       <div class="msg-layout">
-        <div class="conv-list" id="convList"></div>
+        <div class="conv-list" id="convList"><div class="conv-list-head">المحادثات</div></div>
         <div class="chat-panel">
           <div class="chat-head" id="chatHead">اختر محادثة</div>
           <div class="chat-body" id="chatBody"></div>
           <div class="chat-input-row hidden" id="chatInputRow">
             <input id="chatInput" placeholder="اكتب رسالة...">
-            <button class="btn small gold" id="sendMsgBtn">إرسال</button>
+            <button class="chat-send-btn" id="sendMsgBtn">➤</button>
           </div>
         </div>
       </div>
@@ -411,24 +432,36 @@ input.auth-input:focus,select.auth-input:focus,textarea.auth-input:focus{border-
 <div class="modal-overlay" id="composeModal">
   <div class="modal">
     <div class="modal-close-row"><button class="close-x icon-btn" id="closeComposeBtn" style="background:var(--ivory);color:var(--ink-soft);">✕</button></div>
-    <h3>منشور جديد</h3>
+    <h3 id="composeTitle">منشور جديد</h3>
     <div class="type-toggle">
       <button type="button" class="active" id="typePostBtn">منشور 🖼️</button>
       <button type="button" id="typeReelBtn">ريل 🎬</button>
     </div>
     <form id="composeForm">
       <div class="field">
-        <label>الصورة</label>
-        <div class="upload-row"><img class="img-preview" id="cImgPreview" src="" style="display:none;"><input type="file" id="cImageFile" accept="image/*"></div>
-        <input class="auth-input" id="cImageUrl" placeholder="أو الصق رابط صورة مباشر (اختياري)" style="margin-top:8px;">
+        <label id="mediaFieldLabel">الصورة</label>
+        <div class="dropzone" id="composeDropzone">
+          <div class="dz-icon" id="dzIcon">📷</div>
+          <div class="dz-text" id="dzText">اضغط لاختيار صورة أو اسحبها هنا</div>
+          <div class="dz-sub" id="dzSub">سيتم الرفع مباشرة إلى التخزين السحابي</div>
+        </div>
+        <input type="file" id="cImageFile" accept="image/*" class="hidden">
+        <div id="cMediaPreviewWrap" class="media-preview-wrap hidden">
+          <button type="button" class="mp-remove" id="cMediaRemoveBtn">✕</button>
+          <img id="cMediaPreviewImg" class="hidden">
+          <video id="cMediaPreviewVideo" class="hidden" controls muted playsinline></video>
+        </div>
+        <div class="upload-progress hidden" id="cUploadProgressWrap"><i id="cUploadProgressBar"></i></div>
+        <div class="compress-note hidden" id="cCompressNote">☁️ جاري الرفع إلى التخزين السحابي...</div>
+        <input class="auth-input" id="cImageUrl" placeholder="أو الصق رابط صورة/فيديو مباشر (اختياري)" style="margin-top:8px;">
       </div>
-      <div class="field">
+      <div class="field" id="cEmojiField">
         <label>أيقونة احتياطية</label>
         <div class="img-emoji-picker" id="emojiPicker"></div>
         <input type="hidden" id="cEmoji" value="🖼️">
       </div>
       <div class="field"><label>الوصف / التعليق</label><textarea class="auth-input" id="cCaption" rows="3" placeholder="اكتب وصفاً للمنشور..."></textarea></div>
-      <button class="btn gold" type="submit">نشر</button>
+      <button class="btn gold" type="submit" id="composeSubmitBtn">نشر</button>
     </form>
   </div>
 </div>
@@ -440,7 +473,17 @@ input.auth-input:focus,select.auth-input:focus,textarea.auth-input:focus{border-
     <h3>إضافة قصة</h3>
     <div class="field">
       <label>الصورة</label>
-      <div class="upload-row"><img class="img-preview" id="sImgPreview" src="" style="display:none;"><input type="file" id="sImageFile" accept="image/*"></div>
+      <div class="dropzone" id="storyDropzone">
+        <div class="dz-icon">📷</div>
+        <div class="dz-text">اضغط لاختيار صورة أو اسحبها هنا</div>
+        <div class="dz-sub">سيتم الرفع مباشرة إلى التخزين السحابي</div>
+      </div>
+      <input type="file" id="sImageFile" accept="image/*" class="hidden">
+      <div id="sMediaPreviewWrap" class="media-preview-wrap hidden">
+        <button type="button" class="mp-remove" id="sMediaRemoveBtn">✕</button>
+        <img id="sImgPreview" class="hidden">
+      </div>
+      <div class="upload-progress hidden" id="sUploadProgressWrap"><i id="sUploadProgressBar"></i></div>
       <input class="auth-input" id="sImageUrl" placeholder="أو الصق رابط صورة مباشر (اختياري)" style="margin-top:8px;">
     </div>
     <div class="field">
@@ -523,6 +566,7 @@ import {
   getFirestore, collection, addDoc, updateDoc, deleteDoc, doc,
   getDocs, getDoc, setDoc, query, where, onSnapshot, orderBy, arrayUnion, arrayRemove
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 /* رمز الصلاحيات — يُمنح دور المدير العام عند التسجيل به فقط */
 const PERMISSION_CODE = "MASK";
@@ -539,6 +583,23 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
+/* ---- Supabase Storage (رفع الصور والفيديوهات) ----
+   يُستخدم فقط المفتاح العام (publishable/anon) هنا. المفتاح السرّي (secret)
+   لا يجب أبداً وضعه في كود يعمل داخل المتصفح لأنه يمنح صلاحيات كاملة على المشروع. */
+const SUPABASE_URL = "https://zvekaezikymdaucxhzuo.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_LEO_j89d0QWQzMiKz5kp5g_M18OYi0t";
+const SUPABASE_BUCKET = "media";
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+async function uploadToSupabase(file, subfolder){
+  const safeExt = (file.name && file.name.includes('.')) ? file.name.split('.').pop().toLowerCase() : (file.type.startsWith('video')?'mp4':'jpg');
+  const path = `${subfolder}/${Date.now()}_${Math.random().toString(36).slice(2,9)}.${safeExt}`;
+  const { error } = await supabase.storage.from(SUPABASE_BUCKET).upload(path, file, { cacheControl:'3600', upsert:false, contentType:file.type });
+  if(error) throw error;
+  const { data } = supabase.storage.from(SUPABASE_BUCKET).getPublicUrl(path);
+  return data.publicUrl;
+}
 
 /* جداول مميّزة بالبادئة s_ لتفريقها عن أي بيانات أخرى في نفس المشروع */
 const s_users        = collection(db, "s_users");
@@ -618,6 +679,7 @@ el('#closeAuthBtn').addEventListener('click', closeAuthModal);
 el('#authModal').addEventListener('click', (e)=>{ if(e.target.id==='authModal') closeAuthModal(); });
 el('#authToggleBtn').addEventListener('click', ()=>{ if(currentUser){ logout(); } else { openAuthModal(); } });
 el('#heroLoginBtn').addEventListener('click', openAuthModal);
+el('#notifBellBtn').addEventListener('click', ()=>{ if(!currentUser){ toast('سجّل الدخول أولاً','err'); openAuthModal(); return; } switchView('notifications'); });
 el('#tabLogin').addEventListener('click', ()=>{
   el('#tabLogin').classList.add('active'); el('#tabRegister').classList.remove('active');
   el('#loginForm').classList.remove('hidden'); el('#registerForm').classList.add('hidden');
@@ -761,6 +823,7 @@ function listenAllUsers(){
     snap.forEach(d=> allUsers.push({id:d.id, ...d.data()}));
     if(el('#admStatUsers')) el('#admStatUsers').textContent = allUsers.length;
     if(currentDashTab==='users') renderUsersPanel();
+    if(!el('#viewMessages').classList.contains('hidden')) renderConvList();
   });
 }
 
@@ -822,31 +885,123 @@ function renderStories(){
   });
 }
 
+/* ============================================================
+   رفع الوسائط إلى Supabase Storage (يستبدل الرفع كـ base64 القديم)
+   الصور والفيديوهات تُرفع مباشرة إلى مجلد media/<posts|reels|stories|avatars>
+   ثم يُخزَّن رابطها العام في Firestore بدلاً من محتواها.
+   ============================================================ */
+const MAX_VIDEO_SOURCE_BYTES = 100 * 1024 * 1024; // 100MB كحد أقصى لملف الفيديو المصدر قبل الرفع
+
+function isVideoDataOrUrl(src){
+  if(!src) return false;
+  if(src.startsWith('data:video')) return true;
+  return /\.(mp4|webm|ogg|mov|m4v)(\?.*)?$/i.test(src);
+}
+
 /* منشور جديد */
 el('#fabAddBtn').addEventListener('click', ()=>{ if(!currentUser){ toast('سجّل الدخول أولاً','err'); openAuthModal(); return; } openComposeModal(); });
+let cPickedMedia = ''; // رابط الوسائط بعد الرفع إلى Supabase
 function openComposeModal(){
   composeType='post';
+  cPickedMedia = '';
   el('#typePostBtn').classList.add('active'); el('#typeReelBtn').classList.remove('active');
   el('#composeForm').reset();
-  el('#cImgPreview').style.display='none';
+  el('#cMediaPreviewWrap').classList.add('hidden');
+  el('#cMediaPreviewImg').classList.add('hidden');
+  el('#cMediaPreviewVideo').classList.add('hidden');
+  el('#cUploadProgressWrap').classList.add('hidden');
+  el('#cCompressNote').classList.add('hidden');
+  el('#composeDropzone').classList.remove('hidden');
   el('#cEmoji').value='🖼️';
+  updateComposeTypeUI();
   document.querySelectorAll('#emojiPicker .emoji-opt').forEach(x=>x.classList.toggle('selected', x.textContent==='🖼️'));
   el('#composeModal').classList.add('open');
 }
+function updateComposeTypeUI(){
+  const isReel = composeType==='reel';
+  el('#composeTitle').textContent = isReel ? 'ريل جديد 🎬' : 'منشور جديد';
+  el('#mediaFieldLabel').textContent = isReel ? 'الفيديو' : 'الصورة';
+  el('#dzIcon').textContent = isReel ? '🎬' : '📷';
+  el('#dzText').textContent = isReel ? 'اضغط لاختيار فيديو أو اسحبه هنا' : 'اضغط لاختيار صورة أو اسحبها هنا';
+  el('#dzSub').textContent = isReel ? 'حتى 100 ميجابايت — يُرفع للتخزين السحابي' : 'يُرفع مباشرة للتخزين السحابي';
+  el('#cImageFile').accept = isReel ? 'video/*' : 'image/*';
+  el('#cImageUrl').placeholder = isReel ? 'أو الصق رابط فيديو مباشر (اختياري)' : 'أو الصق رابط صورة مباشر (اختياري)';
+}
 el('#closeComposeBtn').addEventListener('click', ()=> el('#composeModal').classList.remove('open'));
-el('#typePostBtn').addEventListener('click', ()=>{ composeType='post'; el('#typePostBtn').classList.add('active'); el('#typeReelBtn').classList.remove('active'); });
-el('#typeReelBtn').addEventListener('click', ()=>{ composeType='reel'; el('#typeReelBtn').classList.add('active'); el('#typePostBtn').classList.remove('active'); });
+el('#typePostBtn').addEventListener('click', ()=>{ composeType='post'; cPickedMedia=''; el('#typePostBtn').classList.add('active'); el('#typeReelBtn').classList.remove('active'); resetComposeMediaPreview(); updateComposeTypeUI(); });
+el('#typeReelBtn').addEventListener('click', ()=>{ composeType='reel'; cPickedMedia=''; el('#typeReelBtn').classList.add('active'); el('#typePostBtn').classList.remove('active'); resetComposeMediaPreview(); updateComposeTypeUI(); });
 
+function resetComposeMediaPreview(){
+  el('#cMediaPreviewWrap').classList.add('hidden');
+  el('#cMediaPreviewImg').classList.add('hidden'); el('#cMediaPreviewImg').src='';
+  el('#cMediaPreviewVideo').classList.add('hidden'); el('#cMediaPreviewVideo').src='';
+  el('#composeDropzone').classList.remove('hidden');
+  el('#cImageUrl').value='';
+  el('#cImageFile').value='';
+}
+
+/* دروب زون سهل الاستخدام أشبه بإنستكرام: اضغط أو اسحب وأفلت */
+const composeDz = el('#composeDropzone');
+composeDz.addEventListener('click', ()=> el('#cImageFile').click());
+['dragover','dragenter'].forEach(evt=> composeDz.addEventListener(evt, (e)=>{ e.preventDefault(); composeDz.classList.add('drag'); }));
+['dragleave','drop'].forEach(evt=> composeDz.addEventListener(evt, (e)=>{ e.preventDefault(); composeDz.classList.remove('drag'); }));
+composeDz.addEventListener('drop', (e)=>{
+  const file = e.dataTransfer.files[0];
+  if(file) handleComposeFile(file);
+});
 el('#cImageFile').addEventListener('change', (e)=>{
   const file = e.target.files[0]; if(!file) return;
-  if(file.size > 900*1024){ toast('حجم الصورة كبير جداً، اختر صورة أصغر من 900 كيلوبايت','err'); e.target.value=''; return; }
-  const reader = new FileReader();
-  reader.onload = ()=>{ el('#cImageUrl').value = reader.result; el('#cImgPreview').src = reader.result; el('#cImgPreview').style.display='block'; };
-  reader.readAsDataURL(file);
+  handleComposeFile(file);
 });
+el('#cMediaRemoveBtn').addEventListener('click', resetComposeMediaPreview);
+
+async function handleComposeFile(file){
+  const isReel = composeType==='reel';
+  if(isReel && !file.type.startsWith('video/')){ toast('الرجاء اختيار ملف فيديو للريل','err'); return; }
+  if(!isReel && !file.type.startsWith('image/')){ toast('الرجاء اختيار ملف صورة','err'); return; }
+  if(isReel && file.size > MAX_VIDEO_SOURCE_BYTES){ toast('حجم الفيديو كبير جداً (أقصى حد 100 ميجابايت)','err'); return; }
+
+  el('#composeDropzone').classList.add('hidden');
+  el('#cMediaPreviewWrap').classList.remove('hidden');
+  el('#cUploadProgressWrap').classList.remove('hidden');
+  el('#cCompressNote').classList.remove('hidden');
+  const bar = el('#cUploadProgressBar'); bar.style.width='10%';
+
+  const localUrl = URL.createObjectURL(file);
+  if(isReel){
+    el('#cMediaPreviewVideo').src = localUrl; el('#cMediaPreviewVideo').classList.remove('hidden');
+    el('#cMediaPreviewImg').classList.add('hidden');
+  }else{
+    el('#cMediaPreviewImg').src = localUrl; el('#cMediaPreviewImg').classList.remove('hidden');
+    el('#cMediaPreviewVideo').classList.add('hidden');
+  }
+
+  try{
+    bar.style.width='40%';
+    const publicUrl = await uploadToSupabase(file, isReel ? 'reels' : 'posts');
+    bar.style.width='100%';
+    cPickedMedia = publicUrl;
+    el('#cImageUrl').value = publicUrl;
+    el('#cCompressNote').classList.add('hidden');
+    setTimeout(()=> el('#cUploadProgressWrap').classList.add('hidden'), 400);
+  }catch(err){
+    toast('تعذر رفع الملف إلى التخزين السحابي: '+(err.message||err),'err');
+    resetComposeMediaPreview();
+  }
+}
 el('#cImageUrl').addEventListener('input', ()=>{
   const v = el('#cImageUrl').value.trim();
-  if(v){ el('#cImgPreview').src=v; el('#cImgPreview').style.display='block'; } else { el('#cImgPreview').style.display='none'; }
+  if(!v){ resetComposeMediaPreview(); return; }
+  cPickedMedia = v;
+  el('#composeDropzone').classList.add('hidden');
+  el('#cMediaPreviewWrap').classList.remove('hidden');
+  if(isVideoDataOrUrl(v) || composeType==='reel'){
+    el('#cMediaPreviewVideo').src=v; el('#cMediaPreviewVideo').classList.remove('hidden');
+    el('#cMediaPreviewImg').classList.add('hidden');
+  }else{
+    el('#cMediaPreviewImg').src=v; el('#cMediaPreviewImg').classList.remove('hidden');
+    el('#cMediaPreviewVideo').classList.add('hidden');
+  }
 });
 
 function buildEmojiPickers(){
@@ -870,10 +1025,13 @@ function buildEmojiPickers(){
 el('#composeForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
   if(!currentUser){ toast('سجّل الدخول أولاً','err'); return; }
+  const submitBtn = el('#composeSubmitBtn');
+  submitBtn.disabled = true; submitBtn.textContent = 'جارٍ النشر...';
   const payload = {
     username: currentUser.username,
     avatarUrl: currentUser.avatarUrl||'',
     type: composeType,
+    isVideo: isVideoDataOrUrl(el('#cImageUrl').value.trim()) || (composeType==='reel' && !!el('#cImageUrl').value.trim()),
     caption: el('#cCaption').value.trim(),
     imageUrl: el('#cImageUrl').value.trim(),
     emoji: el('#cEmoji').value,
@@ -886,31 +1044,71 @@ el('#composeForm').addEventListener('submit', async (e)=>{
     await logActivity(composeType==='reel'?'reel_add':'post_add', `نشر ${composeType==='reel'?'ريل':'منشور'} جديد من ${currentUser.username}`);
     toast('تم النشر بنجاح 🎉','ok');
     el('#composeModal').classList.remove('open');
-  }catch(err){ toast('خطأ: '+err.message,'err'); }
+  }catch(err){
+    toast('خطأ: '+err.message,'err');
+  }finally{
+    submitBtn.disabled = false; submitBtn.textContent = 'نشر';
+  }
 });
 
 /* قصة جديدة */
 function openStoryModal(){
-  el('#sImgPreview').style.display='none';
+  el('#sMediaPreviewWrap').classList.add('hidden');
+  el('#sImgPreview').classList.add('hidden'); el('#sImgPreview').src='';
+  el('#storyDropzone').classList.remove('hidden');
+  el('#sUploadProgressWrap').classList.add('hidden');
   el('#sImageUrl').value='';
+  el('#sImageFile').value='';
   el('#sEmoji').value='✨';
   document.querySelectorAll('#sEmojiPicker .emoji-opt').forEach(x=>x.classList.toggle('selected', x.textContent==='✨'));
   el('#storyModal').classList.add('open');
 }
 el('#closeStoryBtn').addEventListener('click', ()=> el('#storyModal').classList.remove('open'));
-el('#sImageFile').addEventListener('change', (e)=>{
-  const file=e.target.files[0]; if(!file) return;
-  if(file.size > 900*1024){ toast('حجم الصورة كبير جداً','err'); e.target.value=''; return; }
-  const reader = new FileReader();
-  reader.onload = ()=>{ el('#sImageUrl').value=reader.result; el('#sImgPreview').src=reader.result; el('#sImgPreview').style.display='block'; };
-  reader.readAsDataURL(file);
+
+const storyDz = el('#storyDropzone');
+storyDz.addEventListener('click', ()=> el('#sImageFile').click());
+['dragover','dragenter'].forEach(evt=> storyDz.addEventListener(evt, (e)=>{ e.preventDefault(); storyDz.classList.add('drag'); }));
+['dragleave','drop'].forEach(evt=> storyDz.addEventListener(evt, (e)=>{ e.preventDefault(); storyDz.classList.remove('drag'); }));
+storyDz.addEventListener('drop', (e)=>{ const file=e.dataTransfer.files[0]; if(file) handleStoryFile(file); });
+el('#sImageFile').addEventListener('change', (e)=>{ const file=e.target.files[0]; if(file) handleStoryFile(file); });
+el('#sMediaRemoveBtn').addEventListener('click', ()=>{
+  el('#sMediaPreviewWrap').classList.add('hidden');
+  el('#storyDropzone').classList.remove('hidden');
+  el('#sImageUrl').value=''; el('#sImageFile').value='';
 });
+async function handleStoryFile(file){
+  if(!file.type.startsWith('image/')){ toast('الرجاء اختيار ملف صورة','err'); return; }
+  el('#storyDropzone').classList.add('hidden');
+  el('#sMediaPreviewWrap').classList.remove('hidden');
+  el('#sUploadProgressWrap').classList.remove('hidden');
+  const bar = el('#sUploadProgressBar'); bar.style.width='15%';
+  el('#sImgPreview').src = URL.createObjectURL(file); el('#sImgPreview').classList.remove('hidden');
+  try{
+    bar.style.width='50%';
+    const publicUrl = await uploadToSupabase(file, 'stories');
+    bar.style.width='100%';
+    el('#sImageUrl').value = publicUrl;
+    setTimeout(()=> el('#sUploadProgressWrap').classList.add('hidden'), 400);
+  }catch(err){
+    toast('تعذر رفع الصورة: '+(err.message||err),'err');
+    el('#sMediaPreviewWrap').classList.add('hidden');
+    el('#storyDropzone').classList.remove('hidden');
+  }
+}
 el('#sImageUrl').addEventListener('input', ()=>{
   const v = el('#sImageUrl').value.trim();
-  if(v){ el('#sImgPreview').src=v; el('#sImgPreview').style.display='block'; } else { el('#sImgPreview').style.display='none'; }
+  if(v){
+    el('#storyDropzone').classList.add('hidden');
+    el('#sMediaPreviewWrap').classList.remove('hidden');
+    el('#sImgPreview').src=v; el('#sImgPreview').classList.remove('hidden');
+  } else {
+    el('#sMediaPreviewWrap').classList.add('hidden');
+    el('#storyDropzone').classList.remove('hidden');
+  }
 });
 el('#publishStoryBtn').addEventListener('click', async ()=>{
   if(!currentUser){ toast('سجّل الدخول أولاً','err'); return; }
+  const btn = el('#publishStoryBtn'); btn.disabled = true; btn.textContent='جارٍ النشر...';
   try{
     await addDoc(s_stories, {
       username: currentUser.username, avatarUrl: currentUser.avatarUrl||'',
@@ -921,6 +1119,7 @@ el('#publishStoryBtn').addEventListener('click', async ()=>{
     toast('تم نشر القصة ✨','ok');
     el('#storyModal').classList.remove('open');
   }catch(err){ toast('خطأ: '+err.message,'err'); }
+  finally{ btn.disabled=false; btn.textContent='نشر القصة'; }
 });
 
 /* عارض القصص */
@@ -946,6 +1145,12 @@ el('#storyViewerOverlay').addEventListener('click', (e)=>{ if(e.target.id==='sto
 
 /* بطاقة منشور */
 function ratingLikeCount(p){ return (p.likes||[]).length; }
+function mediaHtmlFor(p){
+  const isVid = p.isVideo || isVideoDataOrUrl(p.imageUrl) || (p.type==='reel' && p.imageUrl);
+  if(p.imageUrl && isVid) return `<video src="${p.imageUrl}" controls muted playsinline loop></video>`;
+  if(p.imageUrl) return `<img src="${p.imageUrl}">`;
+  return p.emoji || '🖼️';
+}
 function buildPostCard(p){
   const liked = currentUser && (p.likes||[]).includes(currentUser.username);
   const card = document.createElement('div');
@@ -957,7 +1162,7 @@ function buildPostCard(p){
       ${p.type==='reel' ? '<span class="reel-tag">ريل 🎬</span>' : ''}
       <span class="ptime">${timeAgo(p.createdAtISO)}</span>
     </div>
-    <div class="post-media">${p.imageUrl?`<img src="${p.imageUrl}">`:(p.emoji||'🖼️')}</div>
+    <div class="post-media">${mediaHtmlFor(p)}</div>
     <div class="post-actions">
       <button class="like-btn ${liked?'liked':''}" data-like="${p.id}">${liked?'❤️':'🤍'}</button>
       <button data-open-comments="${p.id}">💬</button>
@@ -1017,7 +1222,8 @@ function renderExplore(){
   list.forEach(p=>{
     const tile = document.createElement('div');
     tile.className='explore-tile';
-    tile.innerHTML = `${p.imageUrl?`<img src="${p.imageUrl}">`:(p.emoji||'🖼️')}${p.type==='reel'?'<span class="reel-mark">🎬</span>':''}`;
+    const isVid = p.isVideo || isVideoDataOrUrl(p.imageUrl);
+    tile.innerHTML = `${p.imageUrl?(isVid?`<video src="${p.imageUrl}" muted></video>`:`<img src="${p.imageUrl}">`):(p.emoji||'🖼️')}${p.type==='reel'?'<span class="reel-mark">🎬</span>':''}`;
     tile.addEventListener('click', ()=> openCommentsModal(p.id));
     host.appendChild(tile);
   });
@@ -1031,7 +1237,7 @@ async function toggleLike(postId){
   try{
     await updateDoc(doc(db,'s_posts',postId), { likes: liked ? arrayRemove(currentUser.username) : arrayUnion(currentUser.username) });
     if(!liked && p.username!==currentUser.username){
-      await addDoc(s_notifications, { toUsername:p.username, fromUsername:currentUser.username, type:'like', postId, text:`أعجب ${currentUser.username} بمنشورك`, read:false, createdAt:new Date().toLocaleString('ar-EG'), createdAtISO:new Date().toISOString() });
+      await sendNotification(p.username, 'like', postId, `أعجب ${currentUser.username} بمنشورك`);
     }
   }catch(err){ toast('تعذر التفاعل: '+err.message,'err'); }
 }
@@ -1044,7 +1250,7 @@ async function submitComment(postId, text){
   try{
     await updateDoc(doc(db,'s_posts',postId), { comments: arrayUnion({username:currentUser.username, text, date:new Date().toLocaleString('ar-EG')}) });
     if(p.username!==currentUser.username){
-      await addDoc(s_notifications, { toUsername:p.username, fromUsername:currentUser.username, type:'comment', postId, text:`علّق ${currentUser.username} على منشورك`, read:false, createdAt:new Date().toLocaleString('ar-EG'), createdAtISO:new Date().toISOString() });
+      await sendNotification(p.username, 'comment', postId, `علّق ${currentUser.username} على منشورك`);
     }
     toast('تم نشر التعليق','ok');
   }catch(err){ toast('تعذر نشر التعليق: '+err.message,'err'); }
@@ -1096,24 +1302,43 @@ el('#confirmDeleteBtn').addEventListener('click', async ()=>{
 });
 
 /* --------------------------------------------------------------
-   الإشعارات
+   الإشعارات (منفصلة عن الرسائل)
    -------------------------------------------------------------- */
+/* دالة موحّدة لإرسال إشعار لأي حدث (لايك، تعليق، متابعة، رسالة...) تصل فوراً عبر onSnapshot */
+async function sendNotification(toUsername, type, postId, text){
+  if(!toUsername || toUsername===(currentUser&&currentUser.username)) return;
+  try{
+    await addDoc(s_notifications, {
+      toUsername, fromUsername: currentUser?currentUser.username:'', type, postId: postId||'', text,
+      read:false, createdAt:new Date().toLocaleString('ar-EG'), createdAtISO:new Date().toISOString()
+    });
+  }catch(e){ /* لا نعطل التفاعل الأساسي بسبب فشل الإشعار */ }
+}
+
 function listenMyNotifications(){
   const q = query(s_notifications, where('toUsername','==',currentUser.username));
   onSnapshot(q, (snap)=>{
+    const prevIds = new Set(myNotifications.map(n=>n.id));
     myNotifications=[];
     snap.forEach(d=> myNotifications.push({id:d.id, ...d.data()}));
     myNotifications.sort((a,b)=> (b.createdAtISO||'').localeCompare(a.createdAtISO||''));
+    // إشعار توست فوري عند وصول إشعار جديد لم يكن موجوداً سابقاً (وليس عند أول تحميل)
+    if(prevIds.size>0){
+      const fresh = myNotifications.find(n=> !prevIds.has(n.id));
+      if(fresh && fresh.type!=='message') toast(fresh.text, 'ok');
+    }
     updateBadges();
     if(!el('#viewNotifications').classList.contains('hidden')) renderNotifications();
-  });
+  }, ()=> toast('تعذر تحميل الإشعارات','err'));
 }
-const NOTIF_ICONS = {like:'❤️', comment:'💬', follow:'👤'};
+const NOTIF_ICONS = {like:'❤️', comment:'💬', follow:'👤', message:'✉️'};
 function renderNotifications(){
+  /* الرسائل لها تبويبها الخاص، لذا تُستبعد من قائمة الإشعارات العامة */
+  const list = myNotifications.filter(n=> n.type!=='message');
   const host = el('#notifList');
   host.innerHTML='';
-  el('#notifEmpty').classList.toggle('hidden', myNotifications.length>0);
-  myNotifications.forEach(n=>{
+  el('#notifEmpty').classList.toggle('hidden', list.length>0);
+  list.forEach(n=>{
     const row = document.createElement('div');
     row.className='notif-row'+(n.read?'':' unread');
     row.innerHTML = `<div class="notif-ic">${NOTIF_ICONS[n.type]||'🔔'}</div><div class="notif-text">${escapeHtml(n.text)}</div><div class="notif-time">${timeAgo(n.createdAtISO)}</div>`;
@@ -1125,16 +1350,23 @@ function renderNotifications(){
   });
 }
 function updateBadges(){
-  const unreadNotif = myNotifications.filter(n=>!n.read).length;
-  el('#bnNotifCount').textContent = unreadNotif;
+  /* شارة الإشعارات: كل شيء ما عدا الرسائل (لايك/تعليق/متابعة) */
+  const unreadNotif = myNotifications.filter(n=>!n.read && n.type!=='message').length;
+  el('#bnNotifCount').textContent = unreadNotif>99?'99+':unreadNotif;
   el('#bnNotifCount').classList.toggle('hidden', unreadNotif===0);
+  el('#bellBadge').textContent = unreadNotif>99?'99+':unreadNotif;
+  el('#bellBadge').classList.toggle('hidden', unreadNotif===0);
+  if(el('#navNotifBadge')){ el('#navNotifBadge').textContent = unreadNotif>99?'99+':unreadNotif; el('#navNotifBadge').classList.toggle('hidden', unreadNotif===0); }
+
+  /* شارة الرسائل: منفصلة تماماً، مصدرها محادثات s_messages غير المقروءة */
   const unreadMsg = currentUser ? allMessages.filter(m=> m.to===currentUser.username && !m.read).length : 0;
-  el('#bnMsgCount').textContent = unreadMsg;
+  el('#bnMsgCount').textContent = unreadMsg>99?'99+':unreadMsg;
   el('#bnMsgCount').classList.toggle('hidden', unreadMsg===0);
+  if(el('#navMsgBadge')){ el('#navMsgBadge').textContent = unreadMsg>99?'99+':unreadMsg; el('#navMsgBadge').classList.toggle('hidden', unreadMsg===0); }
 }
 
 /* --------------------------------------------------------------
-   الرسائل
+   الرسائل — نمط إنستغرام: قائمة كل الأعضاء، والضغط على أي اسم يفتح محادثته
    -------------------------------------------------------------- */
 function listenMyMessages(){
   const q = query(s_messages, where('participants','array-contains', currentUser.username));
@@ -1144,35 +1376,64 @@ function listenMyMessages(){
     allMessages.sort((a,b)=> (a.createdAtISO||'').localeCompare(b.createdAtISO||''));
     updateBadges();
     if(!el('#viewMessages').classList.contains('hidden')){ renderConvList(); if(activeConvUser) renderChat(activeConvUser); }
-  });
+  }, ()=> toast('تعذر تحميل الرسائل','err'));
 }
 function renderConvList(){
   const host = el('#convList');
-  host.innerHTML='';
-  const others = {};
+  host.innerHTML = '<div class="conv-list-head">المحادثات</div>';
+  if(!currentUser) return;
+
+  const lastMsgMap = {};
   allMessages.forEach(m=>{
     const other = m.from===currentUser.username ? m.to : m.from;
-    if(!others[other] || (m.createdAtISO||'') > (others[other].createdAtISO||'')) others[other] = m;
+    if(!lastMsgMap[other] || (m.createdAtISO||'') > (lastMsgMap[other].createdAtISO||'')) lastMsgMap[other] = m;
   });
-  const names = Object.keys(others);
-  if(names.length===0){ host.innerHTML='<div style="padding:16px;color:var(--ink-soft);font-size:13px;">لا توجد محادثات بعد. ابدأ محادثة من صفحة أي عضو.</div>'; return; }
-  names.sort((a,b)=> (others[b].createdAtISO||'').localeCompare(others[a].createdAtISO||''));
-  names.forEach(name=>{
+
+  const others = allUsers.filter(u=> u.username!==currentUser.username);
+  others.sort((a,b)=>{
+    const la = lastMsgMap[a.username], lb = lastMsgMap[b.username];
+    if(la && lb) return (lb.createdAtISO||'').localeCompare(la.createdAtISO||'');
+    if(la) return -1;
+    if(lb) return 1;
+    return a.username.localeCompare(b.username,'ar');
+  });
+
+  if(others.length===0){
+    const empty = document.createElement('div');
+    empty.style.cssText='padding:16px;color:var(--ink-soft);font-size:13px;';
+    empty.textContent='لا يوجد أعضاء آخرون بعد.';
+    host.appendChild(empty);
+    return;
+  }
+
+  others.forEach(u=>{
+    const lm = lastMsgMap[u.username];
+    const unread = !!(lm && lm.to===currentUser.username && !lm.read);
     const item = document.createElement('div');
-    item.className='conv-item'+(activeConvUser===name?' active':'');
-    item.innerHTML = `<div class="pf-avatar">🙂</div><div><div class="cname">${escapeHtml(name)}</div><div class="clast">${escapeHtml(others[name].text)}</div></div>`;
-    item.addEventListener('click', ()=> renderChat(name));
+    item.className='conv-item'+(activeConvUser===u.username?' active':'');
+    item.innerHTML = `
+      <div class="pf-avatar" style="width:48px;height:48px;font-size:20px;">${u.avatarUrl?`<img src="${u.avatarUrl}">`:'🙂'}</div>
+      <div style="flex:1;min-width:0;">
+        <div class="cname">${escapeHtml(u.username)}</div>
+        <div class="clast" style="${unread?'font-weight:800;color:var(--ink);':''}">${lm ? escapeHtml(lm.text) : 'اضغط لبدء محادثة'}</div>
+      </div>
+      ${unread ? '<span class="badge-count" style="position:static;">●</span>' : ''}`;
+    item.addEventListener('click', ()=> renderChat(u.username));
     host.appendChild(item);
   });
 }
 function renderChat(otherUser){
   activeConvUser = otherUser;
-  el('#chatHead').textContent = otherUser;
+  const u = allUsers.find(x=>x.username===otherUser);
+  el('#chatHead').innerHTML = `<div class="pf-avatar" style="width:32px;height:32px;">${u&&u.avatarUrl?`<img src="${u.avatarUrl}">`:'🙂'}</div><span>${escapeHtml(otherUser)}</span>`;
   el('#chatInputRow').classList.remove('hidden');
-  document.querySelectorAll('.conv-item').forEach(i=> i.classList.toggle('active', i.querySelector('.cname').textContent===otherUser));
+  renderConvList();
   const body = el('#chatBody');
   body.innerHTML='';
   const convo = allMessages.filter(m=> (m.from===currentUser.username && m.to===otherUser) || (m.from===otherUser && m.to===currentUser.username));
+  if(convo.length===0){
+    body.innerHTML = `<div style="text-align:center;color:var(--ink-soft);font-size:13px;padding:30px 10px;">لا توجد رسائل بعد مع ${escapeHtml(otherUser)}.<br>ابدأ المحادثة الآن 👋</div>`;
+  }
   convo.forEach(m=>{
     const b = document.createElement('div');
     b.className = 'msg-bubble ' + (m.from===currentUser.username ? 'msg-mine' : 'msg-theirs');
@@ -1194,6 +1455,8 @@ async function sendChatMessage(){
       text, read:false,
       createdAt: new Date().toLocaleString('ar-EG'), createdAtISO: new Date().toISOString()
     });
+    /* إشعار فوري لصاحب المحادثة الآخر بوصول رسالة جديدة (منفصل عن الإشعارات العامة) */
+    await sendNotification(activeConvUser, 'message', '', `أرسل لك ${currentUser.username} رسالة جديدة`);
     el('#chatInput').value='';
   }catch(err){ toast('تعذر إرسال الرسالة: '+err.message,'err'); }
 }
@@ -1239,7 +1502,8 @@ function renderProfile(username){
   myPosts.forEach(p=>{
     const tile = document.createElement('div');
     tile.className='explore-tile';
-    tile.innerHTML = `${p.imageUrl?`<img src="${p.imageUrl}">`:(p.emoji||'🖼️')}${p.type==='reel'?'<span class="reel-mark">🎬</span>':''}`;
+    const isVid = p.isVideo || isVideoDataOrUrl(p.imageUrl);
+    tile.innerHTML = `${p.imageUrl?(isVid?`<video src="${p.imageUrl}" muted></video>`:`<img src="${p.imageUrl}">`):(p.emoji||'🖼️')}${p.type==='reel'?'<span class="reel-mark">🎬</span>':''}`;
     tile.addEventListener('click', ()=> openCommentsModal(p.id));
     grid.appendChild(tile);
   });
@@ -1255,7 +1519,7 @@ async function toggleFollow(targetUsername, currentlyFollowing){
     currentUser.following = currentlyFollowing ? currentUser.following.filter(x=>x!==targetUsername) : [...currentUser.following, targetUsername];
     localStorage.setItem('s_activeUser', JSON.stringify(currentUser));
     if(!currentlyFollowing){
-      await addDoc(s_notifications, { toUsername:targetUsername, fromUsername:currentUser.username, type:'follow', postId:'', text:`بدأ ${currentUser.username} بمتابعتك`, read:false, createdAt:new Date().toLocaleString('ar-EG'), createdAtISO:new Date().toISOString() });
+      await sendNotification(targetUsername, 'follow', '', `بدأ ${currentUser.username} بمتابعتك`);
     }
     toast(currentlyFollowing?'تم إلغاء المتابعة':'تمت المتابعة','ok');
     renderProfile(targetUsername);
@@ -1270,12 +1534,14 @@ el('#editProfileBtn').addEventListener('click', ()=>{
   el('#editProfileModal').classList.add('open');
 });
 el('#closeEditProfileBtn').addEventListener('click', ()=> el('#editProfileModal').classList.remove('open'));
-el('#eImageFile').addEventListener('change', (e)=>{
+el('#eImageFile').addEventListener('change', async (e)=>{
   const file=e.target.files[0]; if(!file) return;
-  if(file.size > 900*1024){ toast('حجم الصورة كبير جداً','err'); e.target.value=''; return; }
-  const reader = new FileReader();
-  reader.onload = ()=>{ el('#eImageUrl').value=reader.result; el('#eImgPreview').src=reader.result; el('#eImgPreview').style.display='block'; };
-  reader.readAsDataURL(file);
+  el('#eImgPreview').src = URL.createObjectURL(file); el('#eImgPreview').style.display='block';
+  try{
+    const publicUrl = await uploadToSupabase(file, 'avatars');
+    el('#eImageUrl').value = publicUrl;
+    toast('تم رفع الصورة، اضغط حفظ التغييرات','ok');
+  }catch(err){ toast('تعذر رفع الصورة: '+(err.message||err),'err'); }
 });
 el('#eImageUrl').addEventListener('input', ()=>{
   const v = el('#eImageUrl').value.trim();
