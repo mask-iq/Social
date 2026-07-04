@@ -253,6 +253,89 @@ input.auth-input:focus,select.auth-input:focus,textarea.auth-input:focus{border-
 .sv-bar i{display:block;height:100%;background:#fff;width:0%;animation:svfill 5s linear forwards;}
 @keyframes svfill{to{width:100%}}
 
+/* ============================================================
+   ريلز — أسلوب تيك توك: شاشة كاملة، تمرير رأسي بالتقاط، تشغيل تلقائي
+   ============================================================ */
+.reels-feed{position:fixed;top:var(--topbar-h,64px);left:0;right:0;bottom:0;z-index:35;background:#000;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.reels-feed::-webkit-scrollbar{display:none;}
+@media(max-width:860px){.reels-feed{bottom:64px;}}
+#viewReels{position:static;}
+#viewReels .empty-state{position:fixed;top:var(--topbar-h,64px);left:0;right:0;bottom:0;z-index:34;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#eee5cf;background:#000;}
+@media(max-width:860px){#viewReels .empty-state{bottom:64px;}}
+.reel-item{position:relative;width:100%;height:100%;scroll-snap-align:start;scroll-snap-stop:always;display:flex;align-items:center;justify-content:center;background:#000;overflow:hidden;}
+.reel-media-wrap{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
+.reel-media-wrap video{width:100%;height:100%;object-fit:cover;background:#000;}
+.reel-emoji-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:96px;background:linear-gradient(160deg,#173330,#0c211e);}
+.reel-scrim{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.72) 0%,rgba(0,0,0,.05) 32%,rgba(0,0,0,0) 55%,rgba(0,0,0,.35) 100%);pointer-events:none;}
+.reel-progress{position:absolute;top:8px;left:14px;right:14px;height:3px;background:rgba(255,255,255,.28);border-radius:99px;overflow:hidden;z-index:6;}
+.reel-progress i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--gold-soft));}
+.reel-top-menu{position:absolute;top:18px;right:14px;z-index:6;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.32);color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(3px);}
+.reel-sidebar{position:absolute;left:10px;bottom:22px;z-index:6;display:flex;flex-direction:column;align-items:center;gap:18px;}
+.reel-side-avatar{position:relative;width:48px;height:48px;border-radius:50%;border:2px solid #fff;overflow:hidden;background:var(--ivory);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;}
+.reel-side-avatar img{width:100%;height:100%;object-fit:cover;}
+.reel-follow-badge{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:20px;height:20px;border-radius:50%;background:var(--danger);color:#fff;font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;border:2px solid #000;line-height:1;}
+.reel-side-btn{display:flex;flex-direction:column;align-items:center;gap:3px;color:#fff;}
+.reel-side-btn .rs-icon{width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.28);display:flex;align-items:center;justify-content:center;font-size:23px;backdrop-filter:blur(3px);transition:transform .15s;}
+.reel-side-btn.liked .rs-icon{color:var(--danger);}
+.reel-side-btn:active .rs-icon{transform:scale(.85);}
+.reel-side-btn .rs-count{font-size:11.5px;font-weight:800;text-shadow:0 1px 4px rgba(0,0,0,.5);}
+.reel-side-btn.reel-mute-btn .rs-icon{background:rgba(0,0,0,.4);}
+.reel-caption-box{position:absolute;right:14px;bottom:24px;left:78px;z-index:6;color:#fff;}
+.reel-caption-user{font-size:14.5px;font-weight:800;margin-bottom:5px;display:flex;align-items:center;gap:6px;text-shadow:0 1px 6px rgba(0,0,0,.5);}
+.reel-caption-text{font-size:13px;line-height:1.6;text-shadow:0 1px 6px rgba(0,0,0,.5);max-height:4.8em;overflow:hidden;}
+.reel-unmute-hint{position:absolute;top:50%;right:50%;transform:translate(50%,-50%);z-index:7;background:rgba(0,0,0,.45);color:#fff;padding:10px 18px;border-radius:999px;font-size:13px;font-weight:800;display:flex;align-items:center;gap:8px;pointer-events:none;opacity:0;transition:opacity .2s;}
+.reel-unmute-hint.show{opacity:1;}
+.reel-heart-burst{position:absolute;font-size:90px;pointer-events:none;z-index:8;animation:reelHeartBurst .8s ease forwards;filter:drop-shadow(0 4px 10px rgba(0,0,0,.4));}
+@keyframes reelHeartBurst{0%{transform:translate(-50%,-50%) scale(.3);opacity:0;}25%{transform:translate(-50%,-50%) scale(1.15);opacity:1;}45%{transform:translate(-50%,-50%) scale(.95);}100%{transform:translate(-50%,-50%) scale(1.05);opacity:0;}}
+.reel-play-hint{position:absolute;top:50%;right:50%;transform:translate(50%,-50%);z-index:7;font-size:54px;color:#fff;opacity:0;pointer-events:none;text-shadow:0 2px 10px rgba(0,0,0,.5);}
+.reel-play-hint.show{animation:reelPlayHint .55s ease forwards;}
+@keyframes reelPlayHint{0%{opacity:0;transform:translate(50%,-50%) scale(.6);}30%{opacity:.95;transform:translate(50%,-50%) scale(1.05);}100%{opacity:0;transform:translate(50%,-50%) scale(1.2);}}
+
+/* نافذة المشاركة */
+.share-user-row{display:flex;align-items:center;gap:10px;padding:9px 4px;border-bottom:1px solid var(--line);}
+.share-user-row .su-name{flex:1;font-size:13.5px;font-weight:700;}
+.share-send-btn{padding:7px 16px;border-radius:999px;background:var(--emerald);color:#fff;font-size:12px;font-weight:800;}
+.share-send-btn.sent{background:var(--ok);}
+
+/* ============================================================
+   الرسائل — أسلوب إنستغرام
+   ============================================================ */
+.chat-head{justify-content:space-between;}
+.chat-head-user{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.chat-head-user .chu-name{display:flex;flex-direction:column;gap:1px;}
+.chat-head-user .chu-name small{font-size:10.5px;color:var(--ink-soft);font-weight:600;}
+.chat-back-btn{display:none;}
+@media(max-width:760px){
+  .msg-layout{position:relative;overflow:hidden;}
+  .conv-list{max-height:none;height:100%;}
+  .chat-panel{position:absolute;inset:0;transform:translateX(105%);transition:transform .25s ease;background:var(--paper);}
+  .msg-layout.chat-open .chat-panel{transform:translateX(0);}
+  .chat-back-btn{display:flex;}
+}
+.chat-head-icons{display:flex;align-items:center;gap:6px;}
+.chat-head-icons .icon-btn{width:36px;height:36px;background:var(--ivory);color:var(--ink);font-size:15px;}
+.msg-time-divider{align-self:center;font-size:11px;color:var(--ink-soft);font-weight:700;margin:10px 0 4px;background:var(--ivory);padding:4px 12px;border-radius:999px;}
+.msg-bubble-wrap{max-width:68%;display:flex;flex-direction:column;gap:2px;position:relative;}
+.msg-bubble-wrap.mine-wrap{align-self:flex-start;align-items:flex-start;}
+.msg-bubble-wrap.theirs-wrap{align-self:flex-end;align-items:flex-end;}
+.msg-bubble{max-width:100%;}
+.msg-bubble img{border-radius:14px;max-width:220px;max-height:280px;object-fit:cover;cursor:pointer;}
+.msg-bubble.img-bubble{padding:4px;background:transparent;}
+.msg-reaction-tag{position:absolute;bottom:-11px;font-size:15px;background:var(--paper);border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.18);padding:2px;line-height:1;}
+.mine-wrap .msg-reaction-tag{left:6px;}
+.theirs-wrap .msg-reaction-tag{right:6px;}
+.msg-seen-label{font-size:10.5px;color:var(--ink-soft);margin-top:4px;align-self:flex-start;}
+.chat-input-row{gap:6px;}
+.chat-input-icon-btn{width:38px;height:38px;border-radius:50%;background:var(--ivory);color:var(--ink-soft);font-size:17px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.chat-heart-send{width:40px;height:40px;border-radius:50%;background:transparent;color:var(--danger);font-size:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.conv-item{position:relative;}
+.conv-item .cavatar-big{width:54px;height:54px;font-size:22px;}
+.conv-item .cname.unread-name{font-weight:900;color:var(--ink);}
+.conv-item .cmeta{display:flex;flex-direction:column;align-items:flex-end;gap:5px;}
+.conv-item .ctime{font-size:10.5px;color:var(--ink-soft);white-space:nowrap;}
+.conv-unread-dot{width:10px;height:10px;border-radius:50%;background:var(--emerald);flex-shrink:0;}
+[data-theme="dark"] .conv-unread-dot{background:var(--gold-soft);}
+
 .bottom-nav{position:fixed;bottom:0;right:0;left:0;height:64px;background:var(--paper);border-top:1px solid var(--line);display:none;justify-content:space-around;align-items:center;z-index:50;box-shadow:0 -6px 20px rgba(0,0,0,.08);}
 .bn-item{display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--ink-soft);font-size:10.5px;font-weight:700;position:relative;padding:6px 10px;}
 .bn-item .ic{font-size:19px;}
@@ -315,9 +398,8 @@ input.auth-input:focus,select.auth-input:focus,textarea.auth-input:focus{border-
 
     <!-- ريلز -->
     <div id="viewReels" class="hidden">
-      <h2 class="display" style="font-size:26px;margin-bottom:14px;">ريلز</h2>
-      <div class="feed" id="reelsHost"></div>
-      <div class="empty-state hidden" id="reelsEmpty"><div class="em">🎬</div><div>لا توجد ريلز بعد.</div></div>
+      <div class="reels-feed" id="reelsHost"></div>
+      <div class="empty-state hidden" id="reelsEmpty"><div class="em">🎬</div><div>لا توجد ريلز بعد. كن أول من ينشر ريلاً!</div></div>
     </div>
 
     <!-- الإشعارات -->
@@ -333,11 +415,17 @@ input.auth-input:focus,select.auth-input:focus,textarea.auth-input:focus{border-
       <div class="msg-layout">
         <div class="conv-list" id="convList"><div class="conv-list-head">المحادثات</div></div>
         <div class="chat-panel">
-          <div class="chat-head" id="chatHead">اختر محادثة</div>
+          <div class="chat-head" id="chatHead">
+            <button class="icon-btn chat-back-btn" id="chatBackBtn" style="background:var(--ivory);color:var(--ink);">→</button>
+            <span style="color:var(--ink-soft);font-weight:700;">اختر محادثة لبدء المراسلة</span>
+          </div>
           <div class="chat-body" id="chatBody"></div>
+          <input type="file" id="chatImageFile" accept="image/*" class="hidden">
           <div class="chat-input-row hidden" id="chatInputRow">
-            <input id="chatInput" placeholder="اكتب رسالة...">
-            <button class="chat-send-btn" id="sendMsgBtn">➤</button>
+            <button class="chat-input-icon-btn" id="chatAttachBtn" title="إرسال صورة">🖼️</button>
+            <input id="chatInput" placeholder="رسالة...">
+            <button class="chat-send-btn hidden" id="sendMsgBtn">➤</button>
+            <button class="chat-heart-send" id="chatHeartBtn" title="إرسال ❤️">🤍</button>
           </div>
         </div>
       </div>
@@ -508,6 +596,21 @@ input.auth-input:focus,select.auth-input:focus,textarea.auth-input:focus{border-
   </div>
 </div>
 
+<!-- نافذة المشاركة -->
+<div class="modal-overlay" id="shareModal">
+  <div class="modal">
+    <div class="modal-close-row"><button class="close-x icon-btn" id="closeShareBtn" style="background:var(--ivory);color:var(--ink-soft);">✕</button></div>
+    <h3>مشاركة</h3>
+    <div style="display:flex;gap:10px;margin-bottom:18px;">
+      <button class="btn small outline" id="shareCopyLinkBtn" style="flex:1;">🔗 نسخ الرابط</button>
+      <button class="btn small outline hidden" id="shareNativeBtn" style="flex:1;">📤 مشاركة عبر...</button>
+    </div>
+    <div style="font-size:13px;font-weight:800;color:var(--ink-soft);margin-bottom:8px;">إرسال إلى صديق</div>
+    <input class="auth-input" id="shareUserSearch" placeholder="ابحث عن صديق..." style="margin-bottom:10px;">
+    <div id="shareUsersList" style="max-height:280px;overflow-y:auto;"></div>
+  </div>
+</div>
+
 <!-- نافذة تعديل الملف الشخصي -->
 <div class="modal-overlay" id="editProfileModal">
   <div class="modal">
@@ -564,7 +667,7 @@ input.auth-input:focus,select.auth-input:focus,textarea.auth-input:focus{border-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import {
   getFirestore, collection, addDoc, updateDoc, deleteDoc, doc,
-  getDocs, getDoc, setDoc, query, where, onSnapshot, orderBy, arrayUnion, arrayRemove
+  getDocs, getDoc, setDoc, query, where, onSnapshot, orderBy, arrayUnion, arrayRemove, increment
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
@@ -625,6 +728,15 @@ let commentsPostId = null;
 let profileTargetUsername = null;
 const EMOJI_CHOICES = ["🖼️","🌅","🌸","🍕","🐾","🏖️","🎨","📚","🎧","☕","🏋️","🚗","🎮","🌙","🧳","🎂","🌿","🕌"];
 
+/* حالة الريلز — تشغيل تلقائي بأسلوب تيك توك */
+let reelsSoundOn = JSON.parse(localStorage.getItem('s_reelsSound') ?? 'true');
+let reelObserver = null;
+let activeReelId = null;
+let sharePostId = null;
+
+/* حالة الرسائل */
+let pendingChatImage = '';
+
 /* أدوات مساعدة */
 function toast(msg, type=""){
   const host = document.getElementById('toastHost');
@@ -660,6 +772,14 @@ async function logActivity(type, detail){
     });
   }catch(e){}
 }
+
+/* ارتفاع الشريط العلوي — يُستخدم لجعل الريلز بملء الشاشة أسفله بدقة */
+function updateTopbarHeightVar(){
+  const tb = document.querySelector('.topbar');
+  if(tb) document.documentElement.style.setProperty('--topbar-h', tb.getBoundingClientRect().height+'px');
+}
+updateTopbarHeightVar();
+window.addEventListener('resize', updateTopbarHeightVar);
 
 /* الوضع الليلي */
 function applyTheme(t){
@@ -799,6 +919,7 @@ const VIEW_IDS = {feed:'viewFeed', explore:'viewExplore', reels:'viewReels', not
 function switchView(view, forcedProfileUser){
   if(['notifications','messages','profile','admin'].includes(view) && !currentUser){ toast('سجّل الدخول أولاً','err'); openAuthModal(); return; }
   if(view==='admin' && !isStaff(currentUser)){ return; }
+  if(view!=='reels'){ pauseAllReels(); if(reelObserver){ reelObserver.disconnect(); } }
   Object.keys(VIEW_IDS).forEach(v=> el('#'+VIEW_IDS[v]).classList.toggle('hidden', v!==view));
   document.querySelectorAll('.nav-desktop .nav-btn').forEach(b=> b.classList.toggle('active', b.dataset.view===view));
   document.querySelectorAll('.bottom-nav .bn-item[data-view]').forEach(b=> b.classList.toggle('active', b.dataset.view===view));
@@ -1204,12 +1325,218 @@ function renderFeed(){
   el('#feedEmpty').classList.toggle('hidden', list.length>0);
   list.forEach(p=>{ const c = buildPostCard(p); host.appendChild(c); wirePostCard(c); });
 }
+/* ============================================================
+   ريلز بأسلوب تيك توك — ملء الشاشة، تمرير بالتقاط، تشغيل تلقائي
+   ============================================================ */
 function renderReels(){
   const host = el('#reelsHost');
-  host.innerHTML='';
   const list = allPosts.filter(p=>p.type==='reel');
   el('#reelsEmpty').classList.toggle('hidden', list.length>0);
-  list.forEach(p=>{ const c = buildPostCard(p); host.appendChild(c); wirePostCard(c); });
+
+  // تحديث تفاضلي: لا نعيد بناء عناصر الفيديو الموجودة أصلاً حتى لا ينقطع التشغيل
+  // كلما وصل تحديث من Firestore (مثل إعجاب على أي منشور آخر في التطبيق)
+  const existingNodes = {};
+  host.querySelectorAll('.reel-item').forEach(n=> existingNodes[n.dataset.reelId]=n);
+
+  let prevNode = null;
+  list.forEach(p=>{
+    let node = existingNodes[p.id];
+    if(node){
+      updateReelItemDynamic(node, p);
+      delete existingNodes[p.id];
+    }else{
+      node = buildReelItem(p);
+      wireReelItem(node, p);
+    }
+    const wantedNext = prevNode ? prevNode.nextSibling : host.firstChild;
+    if(wantedNext !== node) host.insertBefore(node, wantedNext);
+    prevNode = node;
+  });
+  Object.values(existingNodes).forEach(n=> n.remove());
+
+  setupReelObserver();
+}
+
+function updateReelItemDynamic(item, p){
+  const liked = currentUser && (p.likes||[]).includes(currentUser.username);
+  const likeBtn = item.querySelector('[data-reel-like]');
+  if(likeBtn){
+    likeBtn.classList.toggle('liked', !!liked);
+    likeBtn.querySelector('.rs-icon').textContent = liked?'❤️':'🤍';
+    likeBtn.querySelector('.rs-count').textContent = (p.likes||[]).length;
+  }
+  const commentBtn = item.querySelector('[data-reel-comments]');
+  if(commentBtn) commentBtn.querySelector('.rs-count').textContent = (p.comments||[]).length;
+  const shareBtn = item.querySelector('[data-reel-share]');
+  if(shareBtn) shareBtn.querySelector('.rs-count').textContent = p.shares||0;
+  const captionText = item.querySelector('.reel-caption-text');
+  if(p.caption && captionText) captionText.textContent = p.caption;
+}
+
+function buildReelItem(p){
+  const liked = currentUser && (p.likes||[]).includes(currentUser.username);
+  const isSelf = currentUser && currentUser.username===p.username;
+  const item = document.createElement('div');
+  item.className = 'reel-item';
+  item.dataset.reelId = p.id;
+
+  const mediaHtml = p.imageUrl
+    ? `<video src="${p.imageUrl}" loop playsinline preload="metadata"></video>`
+    : `<div class="reel-emoji-fallback">${p.emoji||'🎬'}</div>`;
+
+  item.innerHTML = `
+    <div class="reel-media-wrap">
+      ${mediaHtml}
+      <div class="reel-scrim"></div>
+      <div class="reel-progress"><i></i></div>
+      <div class="reel-unmute-hint"><span>🔇</span><span>الصوت مكتوم — اضغط للتفعيل</span></div>
+      <div class="reel-play-hint">⏸️</div>
+      ${(canModerateContent(currentUser)||isSelf) ? `<button class="reel-top-menu" data-reel-del="${p.id}">🗑️</button>` : ''}
+      <div class="reel-sidebar">
+        <div class="reel-side-avatar" data-profile="${escapeHtml(p.username)}">
+          ${p.avatarUrl?`<img src="${p.avatarUrl}">`:'🙂'}
+          ${(!isSelf && currentUser) ? `<span class="reel-follow-badge" data-quick-follow="${escapeHtml(p.username)}">+</span>` : ''}
+        </div>
+        <button class="reel-side-btn ${liked?'liked':''}" data-reel-like="${p.id}">
+          <span class="rs-icon">${liked?'❤️':'🤍'}</span><span class="rs-count">${(p.likes||[]).length}</span>
+        </button>
+        <button class="reel-side-btn" data-reel-comments="${p.id}">
+          <span class="rs-icon">💬</span><span class="rs-count">${(p.comments||[]).length}</span>
+        </button>
+        <button class="reel-side-btn" data-reel-share="${p.id}">
+          <span class="rs-icon">↗️</span><span class="rs-count">${p.shares||0}</span>
+        </button>
+        <button class="reel-side-btn reel-mute-btn" data-reel-mute="${p.id}">
+          <span class="rs-icon">${reelsSoundOn?'🔊':'🔇'}</span>
+        </button>
+      </div>
+      <div class="reel-caption-box">
+        <div class="reel-caption-user" data-profile="${escapeHtml(p.username)}">@${escapeHtml(p.username)}</div>
+        ${p.caption ? `<div class="reel-caption-text">${escapeHtml(p.caption)}</div>` : ''}
+      </div>
+    </div>`;
+  return item;
+}
+
+function wireReelItem(item, p){
+  item.querySelectorAll('[data-profile]').forEach(x=> x.addEventListener('click', (e)=>{ e.stopPropagation(); switchView('profile', x.dataset.profile); }));
+  item.querySelectorAll('[data-quick-follow]').forEach(x=> x.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    if(!currentUser){ toast('سجّل الدخول أولاً','err'); openAuthModal(); return; }
+    const target = allUsers.find(u=>u.username===x.dataset.quickFollow);
+    const already = target && (target.followers||[]).includes(currentUser.username);
+    toggleFollow(x.dataset.quickFollow, !!already);
+    x.remove();
+  }));
+  item.querySelectorAll('[data-reel-like]').forEach(x=> x.addEventListener('click', (e)=>{ e.stopPropagation(); toggleLike(x.dataset.reelLike); }));
+  item.querySelectorAll('[data-reel-comments]').forEach(x=> x.addEventListener('click', (e)=>{ e.stopPropagation(); openCommentsModal(x.dataset.reelComments); }));
+  item.querySelectorAll('[data-reel-share]').forEach(x=> x.addEventListener('click', (e)=>{ e.stopPropagation(); openShareModal(x.dataset.reelShare); }));
+  item.querySelectorAll('[data-reel-mute]').forEach(x=> x.addEventListener('click', (e)=>{ e.stopPropagation(); toggleReelSound(item); }));
+  item.querySelectorAll('[data-reel-del]').forEach(x=> x.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    pendingDelete = {type:'post', id:x.dataset.reelDel};
+    el('#confirmModalText').textContent='هل أنت متأكد من حذف هذا الريل؟';
+    el('#confirmModal').classList.add('open');
+  }));
+
+  const mediaWrap = item.querySelector('.reel-media-wrap');
+  const video = item.querySelector('video');
+  if(video){
+    video.addEventListener('timeupdate', ()=>{
+      if(!video.duration) return;
+      const bar = item.querySelector('.reel-progress i');
+      if(bar) bar.style.width = (video.currentTime/video.duration*100)+'%';
+    });
+  }
+
+  let lastTap = 0; let singleTapTimer = null;
+  mediaWrap.addEventListener('click', (e)=>{
+    if(e.target.closest('.reel-sidebar') || e.target.closest('.reel-top-menu') || e.target.closest('.reel-caption-box')) return;
+    const now = Date.now();
+    if(now - lastTap < 320){
+      clearTimeout(singleTapTimer);
+      if(currentUser && !(p.likes||[]).includes(currentUser.username)) toggleLike(p.id);
+      burstHeart(mediaWrap, e.clientX ? (e.clientX - mediaWrap.getBoundingClientRect().left) : mediaWrap.clientWidth/2, e.clientY ? (e.clientY - mediaWrap.getBoundingClientRect().top) : mediaWrap.clientHeight/2);
+      lastTap = 0;
+    }else{
+      lastTap = now;
+      singleTapTimer = setTimeout(()=>{ toggleReelPlayback(item); }, 300);
+    }
+  });
+}
+
+function burstHeart(wrap, x, y){
+  const heart = document.createElement('div');
+  heart.className = 'reel-heart-burst';
+  heart.textContent = '❤️';
+  heart.style.right = (wrap.clientWidth - x)+'px';
+  heart.style.top = y+'px';
+  wrap.appendChild(heart);
+  setTimeout(()=> heart.remove(), 800);
+}
+
+function toggleReelPlayback(item){
+  const video = item.querySelector('video');
+  if(!video) return;
+  const hint = item.querySelector('.reel-play-hint');
+  if(video.paused){
+    video.play().catch(()=>{});
+    if(hint){ hint.textContent='▶️'; hint.classList.remove('show'); void hint.offsetWidth; hint.classList.add('show'); }
+  }else{
+    video.pause();
+    if(hint){ hint.textContent='⏸️'; hint.classList.remove('show'); void hint.offsetWidth; hint.classList.add('show'); }
+  }
+}
+
+function setupReelObserver(){
+  if(reelObserver) reelObserver.disconnect();
+  const root = el('#reelsHost');
+  if(!root) return;
+  reelObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      const video = entry.target.querySelector('video');
+      if(!video) return;
+      if(entry.isIntersecting && entry.intersectionRatio>=0.6){
+        activeReelId = entry.target.dataset.reelId;
+        playReelVideo(video, entry.target);
+      }else{
+        video.pause();
+      }
+    });
+  }, {root, threshold:[0,0.6,1]});
+  root.querySelectorAll('.reel-item').forEach(item=> reelObserver.observe(item));
+}
+
+function playReelVideo(video, item){
+  video.muted = !reelsSoundOn;
+  const hint = item.querySelector('.reel-unmute-hint');
+  const playPromise = video.play();
+  if(playPromise && playPromise.catch){
+    playPromise.catch(()=>{
+      // المتصفح منع التشغيل بالصوت تلقائياً — نتراجع للكتم حتى يتفاعل المستخدم
+      video.muted = true;
+      video.play().catch(()=>{});
+      if(reelsSoundOn && hint) hint.classList.add('show');
+    });
+  }
+  if(!video.muted && hint) hint.classList.remove('show');
+}
+
+function toggleReelSound(item){
+  reelsSoundOn = !reelsSoundOn;
+  localStorage.setItem('s_reelsSound', JSON.stringify(reelsSoundOn));
+  document.querySelectorAll('#reelsHost .reel-mute-btn .rs-icon').forEach(ic=> ic.textContent = reelsSoundOn?'🔊':'🔇');
+  const video = item.querySelector('video');
+  const hint = item.querySelector('.reel-unmute-hint');
+  if(video){
+    video.muted = !reelsSoundOn;
+    if(reelsSoundOn){ video.play().catch(()=>{}); }
+    if(hint) hint.classList.remove('show');
+  }
+}
+
+function pauseAllReels(){
+  document.querySelectorAll('#reelsHost video').forEach(v=> v.pause());
 }
 function renderExplore(){
   const host = el('#exploreGrid');
