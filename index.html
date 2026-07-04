@@ -240,28 +240,38 @@ input.auth-input:focus,select.auth-input:focus,textarea.auth-input:focus{border-
 .upload-progress i{display:block;height:100%;width:0%;background:var(--gold);transition:width .15s;}
 .compress-note{font-size:11.5px;color:var(--ink-soft);margin-top:6px;display:flex;align-items:center;gap:6px;}
 
-/* story viewer */
-.story-viewer-overlay{position:fixed;inset:0;background:#000;z-index:120;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:.2s;}
+/* story viewer — أسلوب إنستغرام: شرائح تقدّم، سحب للإغلاق، رد سريع */
+.story-viewer-overlay{position:fixed;inset:0;background:#000;z-index:120;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;}
 .story-viewer-overlay.open{opacity:1;pointer-events:auto;}
-.story-viewer{width:100%;max-width:420px;height:100%;max-height:760px;position:relative;background:#111;border-radius:14px;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.story-viewer{width:100%;max-width:420px;height:100%;max-height:800px;position:relative;background:#111;border-radius:14px;overflow:hidden;display:flex;align-items:center;justify-content:center;touch-action:none;user-select:none;}
 .story-viewer img{width:100%;height:100%;object-fit:contain;}
 .story-viewer .sv-emoji{font-size:100px;}
-.sv-top{position:absolute;top:14px;right:14px;left:14px;display:flex;align-items:center;gap:10px;z-index:5;}
+.sv-caption-overlay{position:absolute;right:16px;left:16px;bottom:86px;z-index:5;color:#fff;font-size:15px;font-weight:700;text-align:center;text-shadow:0 2px 8px rgba(0,0,0,.55);line-height:1.6;}
+.sv-top{position:absolute;top:20px;right:14px;left:14px;display:flex;align-items:center;gap:8px;z-index:5;}
 .sv-top b{color:#fff;font-size:13px;}
-.sv-top .sv-close{margin-right:auto;color:#fff;font-size:20px;background:rgba(0,0,0,.3);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
-.sv-bar{position:absolute;top:6px;right:14px;left:14px;height:3px;background:rgba(255,255,255,.3);border-radius:99px;overflow:hidden;z-index:5;}
-.sv-bar i{display:block;height:100%;background:#fff;width:0%;animation:svfill 5s linear forwards;}
-@keyframes svfill{to{width:100%}}
+.sv-top .sv-close{margin-right:auto;color:#fff;font-size:20px;background:rgba(0,0,0,.3);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sv-segments{position:absolute;top:8px;right:14px;left:14px;display:flex;gap:5px;z-index:5;}
+.sv-segments i{flex:1;height:3px;border-radius:99px;background:rgba(255,255,255,.35);overflow:hidden;position:relative;display:block;}
+.sv-segments i b{position:absolute;inset:0 auto 0 0;width:0%;background:#fff;display:block;}
+.sv-tap-zones{position:absolute;inset:0;display:flex;z-index:3;}
+.sv-tap-zones span{flex:1;}
+.sv-reply-row{position:absolute;bottom:16px;right:14px;left:14px;z-index:6;display:flex;gap:8px;align-items:center;}
+.sv-reply-row input{flex:1;background:rgba(255,255,255,.14);border:1.5px solid rgba(255,255,255,.4);color:#fff;padding:11px 16px;border-radius:999px;font-size:13px;}
+.sv-reply-row input::placeholder{color:rgba(255,255,255,.75);}
+.sv-reply-row button{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.16);color:#fff;font-size:17px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.story-ring.seen{background:var(--line);}
 
 /* ============================================================
    ريلز — أسلوب تيك توك: شاشة كاملة، تمرير رأسي بالتقاط، تشغيل تلقائي
    ============================================================ */
-.reels-feed{position:fixed;top:var(--topbar-h,64px);left:0;right:0;bottom:0;z-index:35;background:#000;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.reels-feed{position:fixed;top:0;left:0;right:0;bottom:64px;z-index:35;background:#000;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 .reels-feed::-webkit-scrollbar{display:none;}
-@media(max-width:860px){.reels-feed{bottom:64px;}}
 #viewReels{position:static;}
-#viewReels .empty-state{position:fixed;top:var(--topbar-h,64px);left:0;right:0;bottom:0;z-index:34;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#eee5cf;background:#000;}
-@media(max-width:860px){#viewReels .empty-state{bottom:64px;}}
+#viewReels .empty-state{position:fixed;top:0;left:0;right:0;bottom:64px;z-index:34;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#eee5cf;background:#000;}
+/* وضع الريلز بملء الشاشة: نخفي الشريط العلوي بالكامل ونُبقي شريط التنقل السفلي ظاهراً دوماً */
+body.reels-mode .topbar{display:none;}
+body.reels-mode .bottom-nav{display:flex;}
+body.reels-mode{padding-bottom:0;}
 .reel-item{position:relative;width:100%;height:100%;scroll-snap-align:start;scroll-snap-stop:always;display:flex;align-items:center;justify-content:center;background:#000;overflow:hidden;}
 .reel-media-wrap{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
 .reel-media-wrap video{width:100%;height:100%;object-fit:cover;background:#000;}
@@ -336,11 +346,50 @@ input.auth-input:focus,select.auth-input:focus,textarea.auth-input:focus{border-
 .conv-unread-dot{width:10px;height:10px;border-radius:50%;background:var(--emerald);flex-shrink:0;}
 [data-theme="dark"] .conv-unread-dot{background:var(--gold-soft);}
 
+/* ============================================================
+   صفحة التعليقات المنبثقة (Bottom Sheet) بأسلوب إنستغرام
+   ============================================================ */
+.sheet-overlay{align-items:flex-end;padding:0;background:rgba(15,30,28,.4);}
+.comments-sheet{width:100%;max-width:600px;margin:0 auto;background:var(--paper);border-radius:20px 20px 0 0;max-height:92vh;height:64vh;min-height:0;display:flex;flex-direction:column;padding:0;box-shadow:0 -10px 40px rgba(0,0,0,.25);}
+.comments-sheet-drag{padding:9px 0 8px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:grab;flex-shrink:0;touch-action:none;}
+.comments-sheet-drag i{width:40px;height:5px;border-radius:99px;background:var(--line);display:block;}
+.comments-sheet-drag b{font-size:14.5px;font-weight:800;padding-bottom:10px;border-bottom:1px solid var(--line);width:100%;text-align:center;display:block;}
+.comments-sheet-body{flex:1;overflow-y:auto;padding:6px 16px;}
+.comments-sheet-footer{border-top:1px solid var(--line);padding:10px 14px;flex-shrink:0;display:flex;gap:10px;align-items:center;}
+.comment-row{display:flex;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line);}
+.comment-row .cr-avatar{width:32px;height:32px;border-radius:50%;overflow:hidden;background:var(--ivory);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.comment-row .cr-avatar img{width:100%;height:100%;object-fit:cover;}
+.comment-row .cr-body{flex:1;font-size:13px;line-height:1.6;}
+.comment-row .cr-body b{margin-left:5px;}
+
+/* عرض المنشور المفرد (مثل فتح منشور من الاستكشاف) */
+#postViewModal .modal{max-width:470px;padding:0;overflow:hidden;position:relative;}
+#postViewModal .modal-close-row{position:absolute;left:8px;top:8px;z-index:5;margin:0;}
+#postViewModal .post-card{border:none;box-shadow:none;border-radius:18px;}
+
+/* أداة تحديد صورة الملف الشخصي (قص/تكبير) */
+.crop-stage{position:relative;width:100%;aspect-ratio:1/1;border-radius:16px;overflow:hidden;background:#000;touch-action:none;cursor:grab;}
+.crop-stage:active{cursor:grabbing;}
+.crop-stage img{position:absolute;top:0;left:0;max-width:none;user-select:none;pointer-events:none;transform-origin:0 0;}
+.crop-frame{position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 2000px rgba(0,0,0,.55);pointer-events:none;border:2px solid rgba(255,255,255,.85);}
+
+/* تراكب الوصف/الكتابة فوق الوسائط عند النشر — تبسيط أشبه بالقصص */
+.media-caption-overlay{position:absolute;right:10px;left:10px;bottom:10px;background:rgba(0,0,0,.45);color:#fff;border:none;border-radius:12px;padding:9px 13px;font-size:13.5px;resize:none;max-height:80px;line-height:1.5;}
+.media-caption-overlay::placeholder{color:rgba(255,255,255,.78);}
+.media-caption-overlay:focus{outline:2px solid var(--gold-soft);}
+
 .bottom-nav{position:fixed;bottom:0;right:0;left:0;height:64px;background:var(--paper);border-top:1px solid var(--line);display:none;justify-content:space-around;align-items:center;z-index:50;box-shadow:0 -6px 20px rgba(0,0,0,.08);}
-.bn-item{display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--ink-soft);font-size:10.5px;font-weight:700;position:relative;padding:6px 10px;}
-.bn-item .ic{font-size:19px;}
+.bn-item{display:flex;align-items:center;justify-content:center;color:var(--ink-soft);position:relative;padding:10px 16px;border-radius:14px;flex:1;}
+.bn-item .ic{font-size:23px;display:inline-block;transition:transform .28s cubic-bezier(.34,1.56,.64,1),color .2s;}
 .bn-item.active{color:var(--emerald);}
-.bn-badge{position:absolute;top:0;left:2px;background:var(--gold);color:#3a2a05;font-size:9.5px;font-weight:800;min-width:16px;height:16px;border-radius:999px;display:flex;align-items:center;justify-content:center;}
+[data-theme="dark"] .bn-item.active{color:var(--gold-soft);}
+.bn-item.active .ic{transform:scale(1.24);}
+.bn-item:active .ic{transform:scale(.8);}
+.bn-item-profile .ic{width:27px;height:27px;border-radius:50%;overflow:hidden;font-size:16px;display:flex;align-items:center;justify-content:center;background:var(--ivory);border:2px solid transparent;transition:transform .28s cubic-bezier(.34,1.56,.64,1),border-color .2s;}
+.bn-item-profile .ic img{width:100%;height:100%;object-fit:cover;}
+.bn-item-profile.active .ic{border-color:var(--emerald);transform:scale(1.18);}
+[data-theme="dark"] .bn-item-profile.active .ic{border-color:var(--gold-soft);}
+.bn-badge{position:absolute;top:2px;left:14px;background:var(--gold);color:#3a2a05;font-size:9.5px;font-weight:800;min-width:16px;height:16px;border-radius:999px;display:flex;align-items:center;justify-content:center;}
 
 @media (max-width:860px){
   .nav-desktop{display:none;} .bottom-nav{display:flex;} body{padding-bottom:80px;}
@@ -498,12 +547,11 @@ input.auth-input:focus,select.auth-input:focus,textarea.auth-input:focus{border-
   <button class="fab hidden" id="fabAddBtn">+</button>
 
   <div class="bottom-nav">
-    <div class="bn-item active" data-view="feed"><span class="ic">🏠</span>الرئيسية</div>
-    <div class="bn-item" data-view="explore"><span class="ic">🔎</span>استكشاف</div>
-    <div class="bn-item" data-view="reels"><span class="ic">🎬</span>ريلز</div>
-    <div class="bn-item" data-view="messages"><span class="ic">✉️</span>رسائل<span class="bn-badge hidden" id="bnMsgCount">0</span></div>
-    <div class="bn-item" data-view="notifications"><span class="ic">🔔</span>إشعارات<span class="bn-badge hidden" id="bnNotifCount">0</span></div>
-    <div class="bn-item" data-view="profile"><span class="ic">👤</span>حسابي</div>
+    <div class="bn-item active" data-view="feed"><span class="ic">🏠</span></div>
+    <div class="bn-item" data-view="reels"><span class="ic">🎬</span></div>
+    <div class="bn-item" data-view="messages"><span class="ic">✉️</span><span class="bn-badge hidden" id="bnMsgCount">0</span></div>
+    <div class="bn-item" data-view="explore"><span class="ic">🔎</span></div>
+    <div class="bn-item bn-item-profile" data-view="profile"><span class="ic" id="bnProfileIcon">👤</span></div>
   </div>
 </div>
 
@@ -527,28 +575,24 @@ input.auth-input:focus,select.auth-input:focus,textarea.auth-input:focus{border-
     </div>
     <form id="composeForm">
       <div class="field">
-        <label id="mediaFieldLabel">الصورة</label>
         <div class="dropzone" id="composeDropzone">
           <div class="dz-icon" id="dzIcon">📷</div>
           <div class="dz-text" id="dzText">اضغط لاختيار صورة أو اسحبها هنا</div>
-          <div class="dz-sub" id="dzSub">سيتم الرفع مباشرة إلى التخزين السحابي</div>
         </div>
         <input type="file" id="cImageFile" accept="image/*" class="hidden">
         <div id="cMediaPreviewWrap" class="media-preview-wrap hidden">
           <button type="button" class="mp-remove" id="cMediaRemoveBtn">✕</button>
           <img id="cMediaPreviewImg" class="hidden">
-          <video id="cMediaPreviewVideo" class="hidden" controls muted playsinline></video>
+          <video id="cMediaPreviewVideo" class="hidden" autoplay muted loop playsinline></video>
+          <textarea id="cCaption" class="media-caption-overlay" rows="2" placeholder="اكتب وصفاً..."></textarea>
         </div>
-        <div class="upload-progress hidden" id="cUploadProgressWrap"><i id="cUploadProgressBar"></i></div>
-        <div class="compress-note hidden" id="cCompressNote">☁️ جاري الرفع إلى التخزين السحابي...</div>
-        <input class="auth-input" id="cImageUrl" placeholder="أو الصق رابط صورة/فيديو مباشر (اختياري)" style="margin-top:8px;">
+        <!-- حقول تقنية مخفية عن المستخدم: كل شيء يحدث تلقائياً في الخلفية عند الضغط على نشر -->
+        <input class="auth-input hidden" id="cImageUrl">
       </div>
-      <div class="field" id="cEmojiField">
-        <label>أيقونة احتياطية</label>
+      <div class="field hidden" id="cEmojiField">
         <div class="img-emoji-picker" id="emojiPicker"></div>
         <input type="hidden" id="cEmoji" value="🖼️">
       </div>
-      <div class="field"><label>الوصف / التعليق</label><textarea class="auth-input" id="cCaption" rows="3" placeholder="اكتب وصفاً للمنشور..."></textarea></div>
       <button class="btn gold" type="submit" id="composeSubmitBtn">نشر</button>
     </form>
   </div>
@@ -560,22 +604,20 @@ input.auth-input:focus,select.auth-input:focus,textarea.auth-input:focus{border-
     <div class="modal-close-row"><button class="close-x icon-btn" id="closeStoryBtn" style="background:var(--ivory);color:var(--ink-soft);">✕</button></div>
     <h3>إضافة قصة</h3>
     <div class="field">
-      <label>الصورة</label>
       <div class="dropzone" id="storyDropzone">
         <div class="dz-icon">📷</div>
         <div class="dz-text">اضغط لاختيار صورة أو اسحبها هنا</div>
-        <div class="dz-sub">سيتم الرفع مباشرة إلى التخزين السحابي</div>
       </div>
       <input type="file" id="sImageFile" accept="image/*" class="hidden">
       <div id="sMediaPreviewWrap" class="media-preview-wrap hidden">
         <button type="button" class="mp-remove" id="sMediaRemoveBtn">✕</button>
         <img id="sImgPreview" class="hidden">
+        <textarea id="sCaption" class="media-caption-overlay" rows="2" placeholder="أضف نصاً على قصتك..."></textarea>
       </div>
-      <div class="upload-progress hidden" id="sUploadProgressWrap"><i id="sUploadProgressBar"></i></div>
-      <input class="auth-input" id="sImageUrl" placeholder="أو الصق رابط صورة مباشر (اختياري)" style="margin-top:8px;">
+      <!-- حقول تقنية مخفية عن المستخدم -->
+      <input class="auth-input hidden" id="sImageUrl">
     </div>
-    <div class="field">
-      <label>أيقونة احتياطية</label>
+    <div class="field hidden" id="sEmojiField">
       <div class="img-emoji-picker" id="sEmojiPicker"></div>
       <input type="hidden" id="sEmoji" value="✨">
     </div>
@@ -584,15 +626,17 @@ input.auth-input:focus,select.auth-input:focus,textarea.auth-input:focus{border-
 </div>
 
 <!-- نافذة التعليقات -->
-<div class="modal-overlay" id="commentsModal">
-  <div class="modal">
-    <div class="modal-close-row"><button class="close-x icon-btn" id="closeCommentsBtn" style="background:var(--ivory);color:var(--ink-soft);">✕</button></div>
-    <h3>التعليقات</h3>
-    <div class="comments-list" id="commentsListHost"></div>
-    <div class="field" style="margin-top:10px;">
-      <textarea class="auth-input" id="newCommentText" rows="2" placeholder="أضف تعليقاً..."></textarea>
+<div class="modal-overlay sheet-overlay" id="commentsModal">
+  <div class="comments-sheet" id="commentsSheet">
+    <div class="comments-sheet-drag" id="commentsSheetDrag">
+      <i></i>
+      <b>التعليقات</b>
     </div>
-    <button class="btn small" id="submitCommentBtn">نشر التعليق</button>
+    <div class="comments-sheet-body" id="commentsListHost"></div>
+    <div class="comments-sheet-footer">
+      <input class="auth-input" id="newCommentText" placeholder="أضف تعليقاً..." style="flex:1;">
+      <button class="btn small" id="submitCommentBtn" style="width:auto;">نشر</button>
+    </div>
   </div>
 </div>
 
@@ -611,6 +655,33 @@ input.auth-input:focus,select.auth-input:focus,textarea.auth-input:focus{border-
   </div>
 </div>
 
+<!-- عرض منشور مفرد (عند فتح منشور عادي من الاستكشاف أو الملف الشخصي) -->
+<div class="modal-overlay" id="postViewModal">
+  <div class="modal">
+    <div class="modal-close-row"><button class="close-x icon-btn" id="closePostViewBtn" style="background:rgba(0,0,0,.45);color:#fff;">✕</button></div>
+    <div id="postViewHost"></div>
+  </div>
+</div>
+
+<!-- أداة تحديد/قص صورة الملف الشخصي -->
+<div class="modal-overlay" id="cropModal">
+  <div class="modal" style="max-width:380px;">
+    <h3 style="margin-bottom:12px;">تحديد الصورة</h3>
+    <div class="crop-stage" id="cropStage">
+      <img id="cropImg" draggable="false">
+      <div class="crop-frame"></div>
+    </div>
+    <div class="field" style="margin-top:16px;margin-bottom:10px;">
+      <label>🔍 التكبير</label>
+      <input type="range" id="cropZoom" min="100" max="300" value="100" style="width:100%;">
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn gold" id="cropConfirmBtn">حفظ الصورة</button>
+      <button class="btn outline" id="cropCancelBtn" style="width:auto;padding:14px 22px;">إلغاء</button>
+    </div>
+  </div>
+</div>
+
 <!-- نافذة تعديل الملف الشخصي -->
 <div class="modal-overlay" id="editProfileModal">
   <div class="modal">
@@ -619,19 +690,26 @@ input.auth-input:focus,select.auth-input:focus,textarea.auth-input:focus{border-
     <div class="field">
       <label>الصورة الشخصية</label>
       <div class="upload-row"><img class="img-preview" id="eImgPreview" src="" style="display:none;"><input type="file" id="eImageFile" accept="image/*"></div>
-      <input class="auth-input" id="eImageUrl" placeholder="أو الصق رابط صورة مباشر (اختياري)" style="margin-top:8px;">
+      <input class="auth-input hidden" id="eImageUrl">
     </div>
     <div class="field"><label>نبذة تعريفية</label><textarea class="auth-input" id="eBio" rows="3" placeholder="اكتب نبذة عنك..."></textarea></div>
     <button class="btn gold" id="saveProfileBtn">حفظ التغييرات</button>
   </div>
+
 </div>
 
 <!-- عارض القصص -->
 <div class="story-viewer-overlay" id="storyViewerOverlay">
   <div class="story-viewer" id="storyViewerInner">
-    <div class="sv-bar"><i id="svBarFill"></i></div>
+    <div class="sv-segments" id="svSegments"></div>
     <div class="sv-top"><b id="svUsername"></b><button class="sv-close" id="svCloseBtn">✕</button></div>
     <div id="svMediaHost" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;"></div>
+    <div class="sv-caption-overlay hidden" id="svCaptionOverlay"></div>
+    <div class="sv-tap-zones"><span data-sv-zone="prev"></span><span data-sv-zone="next"></span></div>
+    <div class="sv-reply-row" id="svReplyRow">
+      <input id="svReplyInput" placeholder="أرسل رداً...">
+      <button id="svReplySendBtn">➤</button>
+    </div>
   </div>
 </div>
 
@@ -748,6 +826,14 @@ function toast(msg, type=""){
 }
 function el(sel){ return document.querySelector(sel); }
 function escapeHtml(str){ const d = document.createElement('div'); d.textContent = str||''; return d.innerHTML; }
+/* دائماً نعرض صورة الملف الشخصي الحالية للمستخدم (من allUsers/currentUser) بدل الصورة
+   المخزّنة وقت إنشاء المنشور/التعليق/القصة، حتى لا تبقى منشورات قديمة بصورة قديمة */
+function liveAvatarFor(username, fallbackUrl){
+  if(currentUser && currentUser.username===username) return currentUser.avatarUrl||fallbackUrl||'';
+  const u = allUsers.find(x=>x.username===username);
+  if(u) return u.avatarUrl||'';
+  return fallbackUrl||'';
+}
 function timeAgo(iso){
   if(!iso) return '';
   const diff = (Date.now() - new Date(iso).getTime())/1000;
@@ -998,12 +1084,16 @@ function renderStories(){
   Object.keys(byUser).forEach(u=>{
     const stories = byUser[u];
     const first = stories[0];
+    const avatar = liveAvatarFor(u, first.avatarUrl);
     const item = document.createElement('div');
     item.className = 'story-item';
-    item.innerHTML = `<div class="story-ring"><div class="story-avatar">${first.avatarUrl?`<img src="${first.avatarUrl}">`:(first.emoji||'✨')}</div></div><span>${escapeHtml(u)}</span>`;
+    item.dataset.storyOwner = u;
+    item.dataset.storyIds = stories.map(s=>s.id).join(',');
+    item.innerHTML = `<div class="story-ring"><div class="story-avatar">${avatar?`<img src="${avatar}">`:(first.emoji||'✨')}</div></div><span>${escapeHtml(u)}</span>`;
     item.addEventListener('click', ()=> openStoryViewer(stories));
     host.appendChild(item);
   });
+  refreshStoryRingsSeenState();
 }
 
 /* ============================================================
@@ -1027,30 +1117,35 @@ function openComposeModal(){
   cPickedMedia = '';
   el('#typePostBtn').classList.add('active'); el('#typeReelBtn').classList.remove('active');
   el('#composeForm').reset();
+/* منشور جديد — تجربة مبسّطة: اختر الوسائط، أضف وصفاً فوقها، ثم اضغط نشر.
+   كل عمليات الرفع للتخزين السحابي تحدث تلقائياً في الخلفية دون إزعاج المستخدم بتفاصيلها */
+el('#fabAddBtn').addEventListener('click', ()=>{ if(!currentUser){ toast('سجّل الدخول أولاً','err'); openAuthModal(); return; } openComposeModal(); });
+let cPickedMedia = ''; // رابط الوسائط بعد الرفع إلى Supabase
+let composeUploadPromise = null;
+function openComposeModal(){
+  composeType='post';
+  cPickedMedia = '';
+  composeUploadPromise = null;
+  el('#typePostBtn').classList.add('active'); el('#typeReelBtn').classList.remove('active');
+  el('#composeForm').reset();
   el('#cMediaPreviewWrap').classList.add('hidden');
   el('#cMediaPreviewImg').classList.add('hidden');
   el('#cMediaPreviewVideo').classList.add('hidden');
-  el('#cUploadProgressWrap').classList.add('hidden');
-  el('#cCompressNote').classList.add('hidden');
   el('#composeDropzone').classList.remove('hidden');
   el('#cEmoji').value='🖼️';
   updateComposeTypeUI();
-  document.querySelectorAll('#emojiPicker .emoji-opt').forEach(x=>x.classList.toggle('selected', x.textContent==='🖼️'));
   el('#composeModal').classList.add('open');
 }
 function updateComposeTypeUI(){
   const isReel = composeType==='reel';
   el('#composeTitle').textContent = isReel ? 'ريل جديد 🎬' : 'منشور جديد';
-  el('#mediaFieldLabel').textContent = isReel ? 'الفيديو' : 'الصورة';
   el('#dzIcon').textContent = isReel ? '🎬' : '📷';
   el('#dzText').textContent = isReel ? 'اضغط لاختيار فيديو أو اسحبه هنا' : 'اضغط لاختيار صورة أو اسحبها هنا';
-  el('#dzSub').textContent = isReel ? 'حتى 100 ميجابايت — يُرفع للتخزين السحابي' : 'يُرفع مباشرة للتخزين السحابي';
   el('#cImageFile').accept = isReel ? 'video/*' : 'image/*';
-  el('#cImageUrl').placeholder = isReel ? 'أو الصق رابط فيديو مباشر (اختياري)' : 'أو الصق رابط صورة مباشر (اختياري)';
 }
 el('#closeComposeBtn').addEventListener('click', ()=> el('#composeModal').classList.remove('open'));
-el('#typePostBtn').addEventListener('click', ()=>{ composeType='post'; cPickedMedia=''; el('#typePostBtn').classList.add('active'); el('#typeReelBtn').classList.remove('active'); resetComposeMediaPreview(); updateComposeTypeUI(); });
-el('#typeReelBtn').addEventListener('click', ()=>{ composeType='reel'; cPickedMedia=''; el('#typeReelBtn').classList.add('active'); el('#typePostBtn').classList.remove('active'); resetComposeMediaPreview(); updateComposeTypeUI(); });
+el('#typePostBtn').addEventListener('click', ()=>{ composeType='post'; cPickedMedia=''; composeUploadPromise=null; el('#typePostBtn').classList.add('active'); el('#typeReelBtn').classList.remove('active'); resetComposeMediaPreview(); updateComposeTypeUI(); });
+el('#typeReelBtn').addEventListener('click', ()=>{ composeType='reel'; cPickedMedia=''; composeUploadPromise=null; el('#typeReelBtn').classList.add('active'); el('#typePostBtn').classList.remove('active'); resetComposeMediaPreview(); updateComposeTypeUI(); });
 
 function resetComposeMediaPreview(){
   el('#cMediaPreviewWrap').classList.add('hidden');
@@ -1059,6 +1154,7 @@ function resetComposeMediaPreview(){
   el('#composeDropzone').classList.remove('hidden');
   el('#cImageUrl').value='';
   el('#cImageFile').value='';
+  composeUploadPromise = null;
 }
 
 /* دروب زون سهل الاستخدام أشبه بإنستكرام: اضغط أو اسحب وأفلت */
@@ -1076,7 +1172,7 @@ el('#cImageFile').addEventListener('change', (e)=>{
 });
 el('#cMediaRemoveBtn').addEventListener('click', resetComposeMediaPreview);
 
-async function handleComposeFile(file){
+function handleComposeFile(file){
   const isReel = composeType==='reel';
   if(isReel && !file.type.startsWith('video/')){ toast('الرجاء اختيار ملف فيديو للريل','err'); return; }
   if(!isReel && !file.type.startsWith('image/')){ toast('الرجاء اختيار ملف صورة','err'); return; }
@@ -1084,9 +1180,6 @@ async function handleComposeFile(file){
 
   el('#composeDropzone').classList.add('hidden');
   el('#cMediaPreviewWrap').classList.remove('hidden');
-  el('#cUploadProgressWrap').classList.remove('hidden');
-  el('#cCompressNote').classList.remove('hidden');
-  const bar = el('#cUploadProgressBar'); bar.style.width='10%';
 
   const localUrl = URL.createObjectURL(file);
   if(isReel){
@@ -1097,33 +1190,16 @@ async function handleComposeFile(file){
     el('#cMediaPreviewVideo').classList.add('hidden');
   }
 
-  try{
-    bar.style.width='40%';
-    const publicUrl = await uploadToSupabase(file, isReel ? 'reels' : 'posts');
-    bar.style.width='100%';
-    cPickedMedia = publicUrl;
-    el('#cImageUrl').value = publicUrl;
-    el('#cCompressNote').classList.add('hidden');
-    setTimeout(()=> el('#cUploadProgressWrap').classList.add('hidden'), 400);
-  }catch(err){
-    toast('تعذر رفع الملف إلى التخزين السحابي: '+(err.message||err),'err');
+  // الرفع الفعلي يبدأ فوراً وبصمت في الخلفية؛ زر «نشر» سينتظره تلقائياً عند الضغط عليه
+  cPickedMedia = '';
+  composeUploadPromise = uploadToSupabase(file, isReel ? 'reels' : 'posts').then(url=>{
+    cPickedMedia = url; el('#cImageUrl').value = url; return url;
+  }).catch(err=>{
+    toast('تعذر رفع الملف: '+(err.message||err),'err');
     resetComposeMediaPreview();
-  }
+    throw err;
+  });
 }
-el('#cImageUrl').addEventListener('input', ()=>{
-  const v = el('#cImageUrl').value.trim();
-  if(!v){ resetComposeMediaPreview(); return; }
-  cPickedMedia = v;
-  el('#composeDropzone').classList.add('hidden');
-  el('#cMediaPreviewWrap').classList.remove('hidden');
-  if(isVideoDataOrUrl(v) || composeType==='reel'){
-    el('#cMediaPreviewVideo').src=v; el('#cMediaPreviewVideo').classList.remove('hidden');
-    el('#cMediaPreviewImg').classList.add('hidden');
-  }else{
-    el('#cMediaPreviewImg').src=v; el('#cMediaPreviewImg').classList.remove('hidden');
-    el('#cMediaPreviewVideo').classList.add('hidden');
-  }
-});
 
 function buildEmojiPickers(){
   [['#emojiPicker','#cEmoji'],['#sEmojiPicker','#sEmoji']].forEach(([hostSel,inputSel])=>{
@@ -1146,21 +1222,23 @@ function buildEmojiPickers(){
 el('#composeForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
   if(!currentUser){ toast('سجّل الدخول أولاً','err'); return; }
+  if(!el('#cImageUrl').value.trim() && !composeUploadPromise){ toast('الرجاء اختيار صورة أو فيديو أولاً','err'); return; }
   const submitBtn = el('#composeSubmitBtn');
   submitBtn.disabled = true; submitBtn.textContent = 'جارٍ النشر...';
-  const payload = {
-    username: currentUser.username,
-    avatarUrl: currentUser.avatarUrl||'',
-    type: composeType,
-    isVideo: isVideoDataOrUrl(el('#cImageUrl').value.trim()) || (composeType==='reel' && !!el('#cImageUrl').value.trim()),
-    caption: el('#cCaption').value.trim(),
-    imageUrl: el('#cImageUrl').value.trim(),
-    emoji: el('#cEmoji').value,
-    likes: [], comments: [],
-    createdAt: new Date().toLocaleString('ar-EG'),
-    createdAtISO: new Date().toISOString()
-  };
   try{
+    if(composeUploadPromise) await composeUploadPromise;
+    const payload = {
+      username: currentUser.username,
+      avatarUrl: currentUser.avatarUrl||'',
+      type: composeType,
+      isVideo: isVideoDataOrUrl(el('#cImageUrl').value.trim()) || (composeType==='reel' && !!el('#cImageUrl').value.trim()),
+      caption: el('#cCaption').value.trim(),
+      imageUrl: el('#cImageUrl').value.trim(),
+      emoji: el('#cEmoji').value,
+      likes: [], comments: [], shares: 0,
+      createdAt: new Date().toLocaleString('ar-EG'),
+      createdAtISO: new Date().toISOString()
+    };
     await addDoc(s_posts, payload);
     await logActivity(composeType==='reel'?'reel_add':'post_add', `نشر ${composeType==='reel'?'ريل':'منشور'} جديد من ${currentUser.username}`);
     toast('تم النشر بنجاح 🎉','ok');
@@ -1172,16 +1250,17 @@ el('#composeForm').addEventListener('submit', async (e)=>{
   }
 });
 
-/* قصة جديدة */
+/* قصة جديدة — تجربة مبسّطة: اختر صورة، أضف نصاً إن أردت، ثم انشر. كل عمليات الرفع تتم تلقائياً في الخلفية */
+let storyUploadPromise = null;
 function openStoryModal(){
   el('#sMediaPreviewWrap').classList.add('hidden');
   el('#sImgPreview').classList.add('hidden'); el('#sImgPreview').src='';
+  el('#sCaption').value='';
   el('#storyDropzone').classList.remove('hidden');
-  el('#sUploadProgressWrap').classList.add('hidden');
   el('#sImageUrl').value='';
   el('#sImageFile').value='';
   el('#sEmoji').value='✨';
-  document.querySelectorAll('#sEmojiPicker .emoji-opt').forEach(x=>x.classList.toggle('selected', x.textContent==='✨'));
+  storyUploadPromise = null;
   el('#storyModal').classList.add('open');
 }
 el('#closeStoryBtn').addEventListener('click', ()=> el('#storyModal').classList.remove('open'));
@@ -1195,45 +1274,31 @@ el('#sImageFile').addEventListener('change', (e)=>{ const file=e.target.files[0]
 el('#sMediaRemoveBtn').addEventListener('click', ()=>{
   el('#sMediaPreviewWrap').classList.add('hidden');
   el('#storyDropzone').classList.remove('hidden');
-  el('#sImageUrl').value=''; el('#sImageFile').value='';
+  el('#sImageUrl').value=''; el('#sImageFile').value=''; storyUploadPromise=null;
 });
-async function handleStoryFile(file){
+function handleStoryFile(file){
   if(!file.type.startsWith('image/')){ toast('الرجاء اختيار ملف صورة','err'); return; }
   el('#storyDropzone').classList.add('hidden');
   el('#sMediaPreviewWrap').classList.remove('hidden');
-  el('#sUploadProgressWrap').classList.remove('hidden');
-  const bar = el('#sUploadProgressBar'); bar.style.width='15%';
   el('#sImgPreview').src = URL.createObjectURL(file); el('#sImgPreview').classList.remove('hidden');
-  try{
-    bar.style.width='50%';
-    const publicUrl = await uploadToSupabase(file, 'stories');
-    bar.style.width='100%';
-    el('#sImageUrl').value = publicUrl;
-    setTimeout(()=> el('#sUploadProgressWrap').classList.add('hidden'), 400);
-  }catch(err){
+  el('#sImageUrl').value='';
+  // الرفع يبدأ فوراً وبصمت؛ زر النشر ينتظره تلقائياً دون أي مؤشرات معقّدة للمستخدم
+  storyUploadPromise = uploadToSupabase(file, 'stories').then(url=>{ el('#sImageUrl').value = url; return url; }).catch(err=>{
     toast('تعذر رفع الصورة: '+(err.message||err),'err');
     el('#sMediaPreviewWrap').classList.add('hidden');
     el('#storyDropzone').classList.remove('hidden');
-  }
+    throw err;
+  });
 }
-el('#sImageUrl').addEventListener('input', ()=>{
-  const v = el('#sImageUrl').value.trim();
-  if(v){
-    el('#storyDropzone').classList.add('hidden');
-    el('#sMediaPreviewWrap').classList.remove('hidden');
-    el('#sImgPreview').src=v; el('#sImgPreview').classList.remove('hidden');
-  } else {
-    el('#sMediaPreviewWrap').classList.add('hidden');
-    el('#storyDropzone').classList.remove('hidden');
-  }
-});
 el('#publishStoryBtn').addEventListener('click', async ()=>{
   if(!currentUser){ toast('سجّل الدخول أولاً','err'); return; }
   const btn = el('#publishStoryBtn'); btn.disabled = true; btn.textContent='جارٍ النشر...';
   try{
+    if(storyUploadPromise) await storyUploadPromise;
     await addDoc(s_stories, {
       username: currentUser.username, avatarUrl: currentUser.avatarUrl||'',
       imageUrl: el('#sImageUrl').value.trim(), emoji: el('#sEmoji').value,
+      caption: el('#sCaption').value.trim(),
       createdAt: new Date().toLocaleString('ar-EG'), createdAtISO: new Date().toISOString()
     });
     await logActivity('story_add', `إضافة قصة من ${currentUser.username}`);
@@ -1243,26 +1308,166 @@ el('#publishStoryBtn').addEventListener('click', async ()=>{
   finally{ btn.disabled=false; btn.textContent='نشر القصة'; }
 });
 
-/* عارض القصص */
+/* عارض القصص — أسلوب إنستغرام بالكامل */
 let storyQueue = []; let storyIndex = 0; let storyTimer = null;
+const STORY_DURATION = 5000;
+let storySegStartTs = 0; let storyRemaining = STORY_DURATION;
+
+function getSeenStorySet(){
+  try{ return new Set(JSON.parse(localStorage.getItem('s_seenStories')||'[]')); }catch(e){ return new Set(); }
+}
+function markStoriesSeen(ids){
+  const set = getSeenStorySet();
+  ids.forEach(id=> set.add(id));
+  localStorage.setItem('s_seenStories', JSON.stringify([...set]));
+}
+function refreshStoryRingsSeenState(){
+  const seen = getSeenStorySet();
+  document.querySelectorAll('#storiesRow .story-item[data-story-owner]').forEach(item=>{
+    const ids = (item.dataset.storyIds||'').split(',').filter(Boolean);
+    const allSeen = ids.length>0 && ids.every(id=> seen.has(id));
+    item.querySelector('.story-ring').classList.toggle('seen', allSeen);
+  });
+}
+
 function openStoryViewer(stories){
   storyQueue = stories; storyIndex = 0;
+  buildStorySegments();
   el('#storyViewerOverlay').classList.add('open');
+  el('#storyViewerInner').style.transform=''; el('#storyViewerInner').style.opacity='';
   showStory();
+}
+function buildStorySegments(){
+  el('#svSegments').innerHTML = storyQueue.map(()=>`<i><b></b></i>`).join('');
 }
 function showStory(){
   clearTimeout(storyTimer);
   const s = storyQueue[storyIndex];
   if(!s){ closeStoryViewer(); return; }
-  el('#svUsername').textContent = s.username + ' · ' + timeAgo(s.createdAtISO);
+  markStoriesSeen([s.id]);
+  refreshStoryRingsSeenState();
+
+  const avatar = liveAvatarFor(s.username, s.avatarUrl);
+  el('#svUsername').innerHTML = `${avatar?`<img src="${avatar}" style="width:26px;height:26px;border-radius:50%;object-fit:cover;">`:''}<span>${escapeHtml(s.username)}</span><span style="opacity:.75;font-weight:600;">· ${timeAgo(s.createdAtISO)}</span>`;
+  el('#svUsername').style.cssText='display:flex;align-items:center;gap:8px;';
   const mediaHost = el('#svMediaHost');
   mediaHost.innerHTML = s.imageUrl ? `<img src="${s.imageUrl}">` : `<div class="sv-emoji">${s.emoji||'✨'}</div>`;
-  const bar = el('#svBarFill'); bar.style.animation='none'; void bar.offsetWidth; bar.style.animation='svfill 5s linear forwards';
-  storyTimer = setTimeout(()=>{ storyIndex++; showStory(); }, 5000);
+  const capEl = el('#svCaptionOverlay');
+  if(s.caption){ capEl.textContent = s.caption; capEl.classList.remove('hidden'); } else { capEl.classList.add('hidden'); }
+  el('#svReplyRow').classList.toggle('hidden', !currentUser || currentUser.username===s.username);
+
+  updateStorySegmentsBase();
+  startSegment(STORY_DURATION);
 }
-function closeStoryViewer(){ clearTimeout(storyTimer); el('#storyViewerOverlay').classList.remove('open'); }
+function updateStorySegmentsBase(){
+  el('#svSegments').querySelectorAll('i b').forEach((b,i)=>{
+    b.style.transition='none';
+    b.style.width = i<storyIndex ? '100%' : '0%';
+  });
+}
+function startSegment(duration){
+  const bar = el('#svSegments').children[storyIndex]?.querySelector('b');
+  if(bar){ bar.style.transition='none'; bar.style.width='0%'; void bar.offsetWidth; bar.style.transition=`width ${duration}ms linear`; bar.style.width='100%'; }
+  storySegStartTs = Date.now(); storyRemaining = duration;
+  storyTimer = setTimeout(()=>{ storyIndex++; showStory(); }, duration);
+}
+function pauseStorySegment(){
+  clearTimeout(storyTimer);
+  const bar = el('#svSegments').children[storyIndex]?.querySelector('b');
+  if(bar){
+    const elapsed = Date.now()-storySegStartTs;
+    storyRemaining = Math.max(STORY_DURATION-elapsed, 60);
+    const pct = Math.min(100,(elapsed/STORY_DURATION)*100);
+    bar.style.transition='none'; bar.style.width=pct+'%';
+  }
+}
+function resumeStorySegment(){
+  const bar = el('#svSegments').children[storyIndex]?.querySelector('b');
+  if(bar){
+    storySegStartTs = Date.now()-(STORY_DURATION-storyRemaining);
+    bar.style.transition = `width ${storyRemaining}ms linear`;
+    requestAnimationFrame(()=> bar.style.width='100%');
+  }
+  storyTimer = setTimeout(()=>{ storyIndex++; showStory(); }, storyRemaining);
+}
+function closeStoryViewer(){
+  clearTimeout(storyTimer);
+  el('#storyViewerOverlay').classList.remove('open');
+  el('#svReplyInput').value='';
+}
 el('#svCloseBtn').addEventListener('click', closeStoryViewer);
 el('#storyViewerOverlay').addEventListener('click', (e)=>{ if(e.target.id==='storyViewerOverlay') closeStoryViewer(); });
+
+/* التنقل بالنقر يمين/يسار، الضغط المطوّل للإيقاف المؤقت، السحب للأسفل للإغلاق */
+const svInnerEl = el('#storyViewerInner');
+let svDrag = {active:false, startX:0, startY:0, dx:0, dy:0, downTime:0, holding:false};
+svInnerEl.addEventListener('pointerdown', (e)=>{
+  if(e.target.closest('.sv-close') || e.target.closest('#svReplyRow')) return;
+  svDrag = {active:true, startX:e.clientX, startY:e.clientY, dx:0, dy:0, downTime:Date.now(), holding:false};
+  svInnerEl.setPointerCapture(e.pointerId);
+});
+svInnerEl.addEventListener('pointermove', (e)=>{
+  if(!svDrag.active) return;
+  svDrag.dx = e.clientX-svDrag.startX; svDrag.dy = e.clientY-svDrag.startY;
+  if(!svDrag.holding && Date.now()-svDrag.downTime>180 && Math.abs(svDrag.dy)<10 && Math.abs(svDrag.dx)<10){
+    svDrag.holding = true; pauseStorySegment();
+  }
+  if(svDrag.dy>16 && svDrag.dy>Math.abs(svDrag.dx)){
+    svInnerEl.style.transition='none';
+    svInnerEl.style.transform = `translateY(${svDrag.dy}px) scale(${Math.max(1-svDrag.dy/1400,0.85)})`;
+    svInnerEl.style.opacity = Math.max(1-svDrag.dy/500,0.4);
+  }
+});
+svInnerEl.addEventListener('pointerup', (e)=>{
+  if(!svDrag.active) return;
+  const wasHolding = svDrag.holding; const heldFor = Date.now()-svDrag.downTime;
+  const dx = svDrag.dx, dy = svDrag.dy;
+  svDrag.active = false;
+  if(wasHolding) resumeStorySegment();
+
+  if(dy>100){
+    svInnerEl.style.transition='transform .2s ease, opacity .2s ease';
+    svInnerEl.style.transform='translateY(120%) scale(.85)'; svInnerEl.style.opacity='0';
+    setTimeout(()=>{ closeStoryViewer(); svInnerEl.style.transform=''; svInnerEl.style.opacity=''; }, 190);
+    return;
+  }
+  svInnerEl.style.transition='transform .2s ease, opacity .2s ease';
+  svInnerEl.style.transform='translateY(0) scale(1)'; svInnerEl.style.opacity='1';
+
+  if(!wasHolding && heldFor<220 && Math.abs(dx)<10 && Math.abs(dy)<10){
+    const rect = svInnerEl.getBoundingClientRect();
+    const x = e.clientX-rect.left;
+    if(x < rect.width*0.35){ storyIndex = Math.max(0, storyIndex-1); showStory(); }
+    else if(x > rect.width*0.65){ storyIndex++; showStory(); }
+  }
+});
+svInnerEl.addEventListener('pointercancel', ()=>{ if(svDrag.holding) resumeStorySegment(); svDrag.active=false; });
+
+/* الرد السريع على قصة */
+async function sendStoryReply(story, text){
+  if(!currentUser){ toast('سجّل الدخول أولاً','err'); openAuthModal(); return; }
+  if(!text || story.username===currentUser.username) return;
+  try{
+    await addDoc(s_messages, {
+      from: currentUser.username, to: story.username,
+      participants: [currentUser.username, story.username].sort(),
+      text: `رد على قصتك: ${text}`, read:false,
+      createdAt: new Date().toLocaleString('ar-EG'), createdAtISO: new Date().toISOString()
+    });
+    await sendNotification(story.username, 'message', '', `${currentUser.username} ردّ على قصتك`);
+    toast('تم إرسال الرد 💬','ok');
+    el('#svReplyInput').value='';
+  }catch(err){ toast('تعذر الإرسال: '+err.message,'err'); }
+}
+el('#svReplySendBtn').addEventListener('click', ()=>{
+  const text = el('#svReplyInput').value.trim();
+  if(text) sendStoryReply(storyQueue[storyIndex], text);
+});
+el('#svReplyInput').addEventListener('keydown', (e)=>{
+  if(e.key==='Enter'){ const text=el('#svReplyInput').value.trim(); if(text) sendStoryReply(storyQueue[storyIndex], text); }
+});
+el('#svReplyInput').addEventListener('focus', ()=> pauseStorySegment());
+el('#svReplyInput').addEventListener('blur', ()=> resumeStorySegment());
 
 /* بطاقة منشور */
 function ratingLikeCount(p){ return (p.likes||[]).length; }
