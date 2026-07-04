@@ -191,11 +191,14 @@ a{color:inherit;text-decoration:none;}
 @keyframes toastOut{to{opacity:0;transform:translateY(-8px)}}
 
 /* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(15,30,28,.5);z-index:90;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:.2s;}
+.modal-overlay{position:fixed;inset:0;background:rgba(10,22,20,.55);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);z-index:90;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s ease;}
 .modal-overlay.open{opacity:1;pointer-events:auto;}
-.modal{background:var(--paper);border-radius:18px;padding:26px;width:100%;max-width:440px;box-shadow:var(--shadow-lg);max-height:88vh;overflow-y:auto;}
-.modal h3{font-size:21px;margin-bottom:16px;}
+.modal{position:relative;background:var(--paper);border-radius:22px;padding:26px;width:100%;max-width:440px;box-shadow:var(--shadow-lg);max-height:88vh;overflow-y:auto;border:1px solid var(--line);}
+.modal-overlay.open .modal{animation:modalPop .34s cubic-bezier(.22,1,.36,1);}
+.modal h3{font-size:22px;margin-bottom:16px;}
 .modal-close-row{display:flex;justify-content:flex-end;margin-bottom:6px;}
+@keyframes modalPop{from{opacity:0;transform:translateY(14px) scale(.97);}to{opacity:1;transform:none;}}
+@keyframes sheetUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
 .tabs{display:flex;gap:6px;background:var(--ivory);border-radius:12px;padding:5px;margin-bottom:22px;}
 .tab-btn{flex:1;padding:11px;border-radius:9px;background:transparent;color:var(--ink-soft);font-weight:700;font-size:14.5px;transition:.2s;}
 .tab-btn.active{background:var(--emerald);color:#fff;box-shadow:0 6px 14px rgba(15,61,62,.25);}
@@ -402,7 +405,52 @@ body.reels-mode{padding-bottom:0;}
 }
 @media (max-width:480px){
   .container{padding:16px 12px 60px;} .hero{padding:22px 18px;}
-  .explore-grid{grid-template-columns:repeat(auto-fill,minmax(105px,1fr));}
+  .explore-grid{grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:4px;}
+}
+
+/* ============================================================
+   تحسينات بصرية عامة + تفاعلات دقيقة (micro-interactions)
+   ============================================================ */
+.btn{letter-spacing:.2px;}
+.btn:active{transform:translateY(0) scale(.97);}
+.icon-btn:active{transform:scale(.88);}
+.post-card{transition:transform .2s ease, box-shadow .2s ease;}
+@media(min-width:861px){.post-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);}}
+.post-actions button:active{transform:scale(.82);}
+.story-ring{transition:transform .18s ease;}
+.story-item:active .story-ring{transform:scale(.9);}
+.explore-tile{transition:transform .18s ease, filter .2s ease;}
+.explore-tile:active{transform:scale(.95);}
+@media(min-width:861px){.explore-tile:hover{filter:brightness(1.06);}}
+.bn-item::after{content:"";position:absolute;top:5px;width:0;height:3px;border-radius:99px;background:currentColor;transition:width .28s cubic-bezier(.34,1.56,.64,1);}
+.bn-item.active::after{width:22px;}
+.hero{box-shadow:var(--shadow);}
+input.auth-input,textarea.auth-input,select.auth-input{transition:border-color .2s, box-shadow .2s, background .2s;}
+.conv-item{transition:background .15s;}
+.modal-close-row .close-x{transition:transform .25s ease, background .2s;}
+.modal-close-row .close-x:hover{transform:rotate(90deg);}
+.tab-btn{transition:background .2s, color .2s, box-shadow .2s;}
+.dash-tabs button,.nav-desktop button{transition:background .2s,color .2s;}
+.conv-item:active{background:var(--ivory);}
+
+/* ============================================================
+   تحويل كل النوافذ إلى صفحات منبثقة من الأسفل (Bottom Sheets) على الهاتف
+   تماماً مثل نافذة التعليقات — تجربة أصلية مريحة للإبهام + سحب للإغلاق
+   ============================================================ */
+@media (max-width:600px){
+  .modal-overlay{align-items:flex-end;padding:0;}
+  .modal-overlay .modal{max-width:100%;width:100%;border-radius:26px 26px 0 0;border-bottom:none;max-height:93vh;padding:14px 18px calc(22px + env(safe-area-inset-bottom));}
+  .modal-overlay.open .modal{animation:sheetUp .36s cubic-bezier(.22,1,.36,1);}
+  .modal-overlay .modal::before{content:"";display:block;width:44px;height:5px;border-radius:99px;background:var(--line);margin:2px auto 14px;flex-shrink:0;}
+  .modal h3{font-size:20px;}
+  .modal-close-row{margin-top:-4px;}
+  /* عرض المنشور المفرد يحتفظ بتصميمه لكنه ينزلق من الأسفل أيضاً */
+  #postViewModal .modal{padding:0;border-radius:26px 26px 0 0;}
+  #postViewModal .modal::before{display:none;}
+  #cropModal .modal{padding:16px 18px calc(22px + env(safe-area-inset-bottom));}
+  /* أزرار أكبر وأسهل للمس على الهاتف */
+  .btn{padding:15px;font-size:16px;}
+  .btn.small{padding:11px 16px;font-size:14px;}
 }
 </style>
 </head>
@@ -1495,7 +1543,7 @@ function buildPostCard(p){
       ${(canModerateContent(currentUser)||(currentUser&&currentUser.username===p.username)) ? `<button data-del-post="${p.id}" style="margin-right:auto;">🗑️</button>` : ''}
     </div>
     <div class="post-body">
-      <div class="likes-count">${ratingLikeCount(p)} إعجاب</div>
+      <div class="likes-count">${ratingLikeCount(p)} إ��جاب</div>
       ${p.caption ? `<div class="caption"><b data-profile="${escapeHtml(p.username)}">${escapeHtml(p.username)}</b>${escapeHtml(p.caption)}</div>` : ''}
       <div class="comments-preview" data-open-comments="${p.id}">${(p.comments||[]).length>0 ? 'عرض كل التعليقات ('+p.comments.length+')' : 'لا توجد تعليقات بعد'}</div>
       <div class="comment-add-row">
@@ -1784,6 +1832,48 @@ function openPostView(postId){
 }
 el('#closePostViewBtn').addEventListener('click', ()=> el('#postViewModal').classList.remove('open'));
 el('#postViewModal').addEventListener('click', (e)=>{ if(e.target.id==='postViewModal') el('#postViewModal').classList.remove('open'); });
+
+/* ============================================================
+   سلوك عام لكل النوافذ المنبثقة على الهاتف:
+   - الضغط على الخلفية المعتمة يُغلق النافذة
+   - السحب للأسفل من أعلى النافذة (منطقة المقبض) يُغلقها مثل إنستغرام
+   نتجاهل نافذة التعليقات لأن لها معالِجاً مخصصاً بالفعل.
+   ============================================================ */
+(function universalSheetBehavior(){
+  const isSheet = ()=> window.matchMedia('(max-width:600px)').matches;
+  document.querySelectorAll('.modal-overlay').forEach(ov=>{
+    if(ov.id==='commentsModal') return;
+    const modal = ov.querySelector('.modal'); if(!modal) return;
+    // إغلاق بالضغط على الخلفية
+    ov.addEventListener('click', (e)=>{ if(e.target===ov) ov.classList.remove('open'); });
+    // سحب للإغلاق
+    let dragging=false, startY=0, cur=0;
+    modal.addEventListener('pointerdown', (e)=>{
+      if(!isSheet() || modal.scrollTop>3) return;
+      const top = modal.getBoundingClientRect().top;
+      if(e.clientY - top > 92) return; // فقط من منطقة المقبض العلوية
+      if(e.target.closest('input,textarea,select,button,a,.crop-stage,.dropzone,.media-preview-wrap')) return;
+      dragging=true; startY=e.clientY; cur=0; modal.style.transition='none';
+      try{ modal.setPointerCapture(e.pointerId); }catch(_){}
+    });
+    modal.addEventListener('pointermove', (e)=>{
+      if(!dragging) return;
+      const dy = e.clientY - startY;
+      if(dy<=0){ cur=0; modal.style.transform=''; ov.style.background=''; return; }
+      cur=dy; modal.style.transform=`translateY(${dy}px)`;
+      ov.style.background=`rgba(10,22,20,${Math.max(.12,.55 - dy/700)})`;
+    });
+    const end=()=>{
+      if(!dragging) return; dragging=false;
+      modal.style.transition='transform .28s cubic-bezier(.22,1,.36,1)';
+      if(cur>120){ ov.classList.remove('open'); }
+      modal.style.transform=''; ov.style.background='';
+      setTimeout(()=>{ modal.style.transition=''; }, 300);
+    };
+    modal.addEventListener('pointerup', end);
+    modal.addEventListener('pointercancel', end);
+  });
+})();
 
 async function toggleLike(postId){
   if(!currentUser){ toast('سجّل الدخول أولاً','err'); openAuthModal(); return; }
