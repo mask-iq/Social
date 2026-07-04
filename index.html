@@ -270,7 +270,12 @@ input.auth-input:focus,select.auth-input:focus,textarea.auth-input:focus{border-
 #viewReels .empty-state{position:fixed;top:0;left:0;right:0;bottom:64px;z-index:34;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#eee5cf;background:#000;}
 /* وضع الريلز بملء الشاشة: نخفي الشريط العلوي بالكامل ونُبقي شريط التنقل السفلي ظاهراً دوماً */
 body.reels-mode .topbar{display:none;}
-body.reels-mode .bottom-nav{display:flex;}
+body.reels-mode .bottom-nav{display:flex;background:#000;border-top:1px solid rgba(255,255,255,.12);box-shadow:none;}
+body.reels-mode .bottom-nav .bn-item{color:rgba(255,255,255,.75);}
+body.reels-mode .bottom-nav .bn-item.active{color:#fff;}
+body.reels-mode .bottom-nav .bn-item-profile .ic{background:rgba(255,255,255,.15);}
+body.reels-mode .bottom-nav .bn-item-profile.active .ic{border-color:#fff;}
+body.reels-mode .fab{display:none !important;}
 body.reels-mode{padding-bottom:0;}
 .reel-item{position:relative;width:100%;height:100%;scroll-snap-align:start;scroll-snap-stop:always;display:flex;align-items:center;justify-content:center;background:#000;overflow:hidden;}
 .reel-media-wrap{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
@@ -1006,6 +1011,8 @@ function switchView(view, forcedProfileUser){
   if(['notifications','messages','profile','admin'].includes(view) && !currentUser){ toast('سجّل الدخول أولاً','err'); openAuthModal(); return; }
   if(view==='admin' && !isStaff(currentUser)){ return; }
   if(view!=='reels'){ pauseAllReels(); if(reelObserver){ reelObserver.disconnect(); } }
+  /* وضع الريلز بملء الشاشة: نخفي الشريط العلوي ونُبقي شريط التنقل السفلي فقط */
+  document.body.classList.toggle('reels-mode', view==='reels');
   Object.keys(VIEW_IDS).forEach(v=> el('#'+VIEW_IDS[v]).classList.toggle('hidden', v!==view));
   document.querySelectorAll('.nav-desktop .nav-btn').forEach(b=> b.classList.toggle('active', b.dataset.view===view));
   document.querySelectorAll('.bottom-nav .bn-item[data-view]').forEach(b=> b.classList.toggle('active', b.dataset.view===view));
@@ -1109,14 +1116,6 @@ function isVideoDataOrUrl(src){
   return /\.(mp4|webm|ogg|mov|m4v)(\?.*)?$/i.test(src);
 }
 
-/* منشور جديد */
-el('#fabAddBtn').addEventListener('click', ()=>{ if(!currentUser){ toast('سجّل الدخول أولاً','err'); openAuthModal(); return; } openComposeModal(); });
-let cPickedMedia = ''; // رابط الوسائط بعد الرفع إلى Supabase
-function openComposeModal(){
-  composeType='post';
-  cPickedMedia = '';
-  el('#typePostBtn').classList.add('active'); el('#typeReelBtn').classList.remove('active');
-  el('#composeForm').reset();
 /* منشور جديد — تجربة مبسّطة: اختر الوسائط، أضف وصفاً فوقها، ثم اضغط نشر.
    كل عمليات الرفع للتخزين السحابي تحدث تلقائياً في الخلفية دون إزعاج المستخدم بتفاصيلها */
 el('#fabAddBtn').addEventListener('click', ()=>{ if(!currentUser){ toast('سجّل الدخول أولاً','err'); openAuthModal(); return; } openComposeModal(); });
@@ -1479,11 +1478,12 @@ function mediaHtmlFor(p){
 }
 function buildPostCard(p){
   const liked = currentUser && (p.likes||[]).includes(currentUser.username);
+  const headAvatar = liveAvatarFor(p.username, p.avatarUrl);
   const card = document.createElement('div');
   card.className = 'post-card';
   card.innerHTML = `
     <div class="post-head">
-      <div class="pf-avatar" data-profile="${escapeHtml(p.username)}">${p.avatarUrl?`<img src="${p.avatarUrl}">`:'🙂'}</div>
+      <div class="pf-avatar" data-profile="${escapeHtml(p.username)}">${headAvatar?`<img src="${headAvatar}">`:'🙂'}</div>
       <b data-profile="${escapeHtml(p.username)}">${escapeHtml(p.username)}</b>
       ${p.type==='reel' ? '<span class="reel-tag">ريل 🎬</span>' : ''}
       <span class="ptime">${timeAgo(p.createdAtISO)}</span>
@@ -1599,7 +1599,7 @@ function buildReelItem(p){
       ${(canModerateContent(currentUser)||isSelf) ? `<button class="reel-top-menu" data-reel-del="${p.id}">🗑️</button>` : ''}
       <div class="reel-sidebar">
         <div class="reel-side-avatar" data-profile="${escapeHtml(p.username)}">
-          ${p.avatarUrl?`<img src="${p.avatarUrl}">`:'🙂'}
+          ${liveAvatarFor(p.username, p.avatarUrl)?`<img src="${liveAvatarFor(p.username, p.avatarUrl)}">`:'🙂'}
           ${(!isSelf && currentUser) ? `<span class="reel-follow-badge" data-quick-follow="${escapeHtml(p.username)}">+</span>` : ''}
         </div>
         <button class="reel-side-btn ${liked?'liked':''}" data-reel-like="${p.id}">
@@ -1756,10 +1756,34 @@ function renderExplore(){
     tile.className='explore-tile';
     const isVid = p.isVideo || isVideoDataOrUrl(p.imageUrl);
     tile.innerHTML = `${p.imageUrl?(isVid?`<video src="${p.imageUrl}" muted></video>`:`<img src="${p.imageUrl}">`):(p.emoji||'🖼️')}${p.type==='reel'?'<span class="reel-mark">🎬</span>':''}`;
-    tile.addEventListener('click', ()=> openCommentsModal(p.id));
+    tile.addEventListener('click', ()=> openPostView(p.id));
     host.appendChild(tile);
   });
 }
+
+/* فتح المنشور حسب نوعه: الريل يُفتح داخل واجهة الريلز بملء الشاشة،
+   والمنشور العادي يُفتح كبطاقة منشور كاملة في نافذة مستقلة (وليس التعليقات مباشرة) */
+function openPostView(postId){
+  const p = allPosts.find(x=>x.id===postId);
+  if(!p){ return; }
+  if(p.type==='reel'){
+    switchView('reels');
+    // انتقل إلى الريل المطلوب بعد إعادة البناء
+    setTimeout(()=>{
+      const node = document.querySelector(`#reelsHost .reel-item[data-reel-id="${postId}"]`);
+      if(node) node.scrollIntoView({behavior:'auto', block:'start'});
+    }, 60);
+    return;
+  }
+  const host = el('#postViewHost');
+  host.innerHTML='';
+  const card = buildPostCard(p);
+  host.appendChild(card);
+  wirePostCard(card);
+  el('#postViewModal').classList.add('open');
+}
+el('#closePostViewBtn').addEventListener('click', ()=> el('#postViewModal').classList.remove('open'));
+el('#postViewModal').addEventListener('click', (e)=>{ if(e.target.id==='postViewModal') el('#postViewModal').classList.remove('open'); });
 
 async function toggleLike(postId){
   if(!currentUser){ toast('سجّل الدخول أولاً','err'); openAuthModal(); return; }
@@ -1793,9 +1817,83 @@ function openCommentsModal(postId){
   const p = allPosts.find(x=>x.id===postId);
   renderComments(p ? p.comments||[] : []);
   el('#newCommentText').value='';
+  const sheet = el('#commentsSheet');
+  sheet.style.transition='transform .28s cubic-bezier(.22,1,.36,1)';
+  sheet.style.transform='translateY(100%)';
   el('#commentsModal').classList.add('open');
+  requestAnimationFrame(()=>{ sheet.style.transform='translateY(0)'; });
 }
-el('#closeCommentsBtn').addEventListener('click', ()=> el('#commentsModal').classList.remove('open'));
+function closeCommentsModal(){
+  const sheet = el('#commentsSheet');
+  sheet.style.transition='transform .25s ease';
+  sheet.style.transform='translateY(100%)';
+  setTimeout(()=>{ el('#commentsModal').classList.remove('open'); sheet.style.transform=''; sheet.style.height=''; }, 240);
+}
+/* إغلاق بالضغط على الخلفية */
+el('#commentsModal').addEventListener('click', (e)=>{ if(e.target.id==='commentsModal') closeCommentsModal(); });
+
+/* ============================================================
+   سحب صفحة التعليقات المنبثقة (أسلوب إنستغرام):
+   - امسكها من الأعلى واسحب لأعلى/أسفل لتكبيرها أو تصغيرها
+   - سحبة سريعة أو كبيرة للأسفل تُغلقها
+   ============================================================ */
+(function wireCommentsSheetDrag(){
+  const sheet = el('#commentsSheet');
+  const handle = el('#commentsSheetDrag');
+  let dragging=false, startY=0, startH=0, startTs=0, lastY=0, translated=0;
+  const vh = ()=> window.innerHeight;
+  function onDown(e){
+    dragging=true; translated=0;
+    startY = e.clientY; lastY = e.clientY; startTs = Date.now();
+    startH = sheet.getBoundingClientRect().height;
+    sheet.style.transition='none';
+    handle.setPointerCapture && handle.setPointerCapture(e.pointerId);
+  }
+  function onMove(e){
+    if(!dragging) return;
+    const dy = e.clientY - startY; lastY = e.clientY;
+    const bodyEl = el('#commentsListHost');
+    // إذا كانت التعليقات مطوّلة والمستخدم في الأعلى فقط نسمح بالسحب لأسفل للإغلاق
+    if(dy < 0){
+      // سحب لأعلى => تكبير الصفحة حتى 92vh
+      const newH = Math.min(vh()*0.92, startH - dy);
+      sheet.style.height = newH+'px';
+      sheet.style.transform='translateY(0)';
+    }else{
+      // سحب لأسفل => تصغير ثم إزاحة للإغلاق
+      const shrink = Math.min(startH - vh()*0.3, dy);
+      if(startH - dy > vh()*0.3){
+        sheet.style.height = (startH - dy)+'px';
+        sheet.style.transform='translateY(0)';
+        translated=0;
+      }else{
+        sheet.style.height = (vh()*0.3)+'px';
+        translated = dy - (startH - vh()*0.3);
+        sheet.style.transform=`translateY(${Math.max(0,translated)}px)`;
+      }
+    }
+    if(bodyEl) bodyEl.style.overflowY = dy>0 ? 'hidden':'auto';
+  }
+  function onUp(e){
+    if(!dragging) return;
+    dragging=false;
+    const dy = lastY - startY;
+    const dt = Date.now()-startTs;
+    const velocity = dy/Math.max(dt,1); // px/ms
+    sheet.style.transition='transform .25s ease, height .25s ease';
+    const bodyEl = el('#commentsListHost'); if(bodyEl) bodyEl.style.overflowY='auto';
+    // سحبة سريعة للأسفل أو إزاحة كبيرة => إغلاق
+    if((velocity>0.7 && dy>40) || translated>90 || dy > vh()*0.32){
+      closeCommentsModal();
+    }else{
+      sheet.style.transform='translateY(0)';
+    }
+  }
+  handle.addEventListener('pointerdown', onDown);
+  handle.addEventListener('pointermove', onMove);
+  handle.addEventListener('pointerup', onUp);
+  handle.addEventListener('pointercancel', onUp);
+})();
 function renderComments(comments){
   const host = el('#commentsListHost');
   host.innerHTML='';
@@ -1884,8 +1982,6 @@ function renderNotifications(){
 function updateBadges(){
   /* شارة الإشعارات: كل شيء ما عدا الرسائل (لايك/تعليق/متابعة) */
   const unreadNotif = myNotifications.filter(n=>!n.read && n.type!=='message').length;
-  el('#bnNotifCount').textContent = unreadNotif>99?'99+':unreadNotif;
-  el('#bnNotifCount').classList.toggle('hidden', unreadNotif===0);
   el('#bellBadge').textContent = unreadNotif>99?'99+':unreadNotif;
   el('#bellBadge').classList.toggle('hidden', unreadNotif===0);
   if(el('#navNotifBadge')){ el('#navNotifBadge').textContent = unreadNotif>99?'99+':unreadNotif; el('#navNotifBadge').classList.toggle('hidden', unreadNotif===0); }
@@ -2036,7 +2132,7 @@ function renderProfile(username){
     tile.className='explore-tile';
     const isVid = p.isVideo || isVideoDataOrUrl(p.imageUrl);
     tile.innerHTML = `${p.imageUrl?(isVid?`<video src="${p.imageUrl}" muted></video>`:`<img src="${p.imageUrl}">`):(p.emoji||'🖼️')}${p.type==='reel'?'<span class="reel-mark">🎬</span>':''}`;
-    tile.addEventListener('click', ()=> openCommentsModal(p.id));
+    tile.addEventListener('click', ()=> openPostView(p.id));
     grid.appendChild(tile);
   });
 }
@@ -2066,14 +2162,109 @@ el('#editProfileBtn').addEventListener('click', ()=>{
   el('#editProfileModal').classList.add('open');
 });
 el('#closeEditProfileBtn').addEventListener('click', ()=> el('#editProfileModal').classList.remove('open'));
-el('#eImageFile').addEventListener('change', async (e)=>{
+el('#eImageFile').addEventListener('change', (e)=>{
   const file=e.target.files[0]; if(!file) return;
-  el('#eImgPreview').src = URL.createObjectURL(file); el('#eImgPreview').style.display='block';
+  if(!file.type.startsWith('image/')){ toast('الرجاء اختيار ملف صورة','err'); return; }
+  openCropper(file);
+  e.target.value=''; // نسمح باختيار نفس الملف مجدداً لاحقاً
+});
+
+/* ============================================================
+   أداة قص/تحديد صورة الملف الشخصي (سحب + تكبير مثل بقية التطبيقات)
+   ============================================================ */
+const cropState = { img:null, natW:0, natH:0, base:1, scale:1, tx:0, ty:0, stage:0, dragging:false, sx:0, sy:0 };
+function openCropper(file){
+  const url = URL.createObjectURL(file);
+  const img = new Image();
+  img.onload = ()=>{
+    cropState.img = img; cropState.natW = img.naturalWidth; cropState.natH = img.naturalHeight;
+    el('#cropImg').src = url;
+    el('#cropZoom').value = 100;
+    el('#cropModal').classList.add('open');
+    // ننتظر ظهور النافذة لقياس أبعاد المسرح بدقة
+    requestAnimationFrame(()=>{ initCropLayout(); });
+  };
+  img.src = url;
+}
+function initCropLayout(){
+  const stageEl = el('#cropStage');
+  const size = stageEl.getBoundingClientRect().width;
+  cropState.stage = size;
+  // نغطي المربع بالكامل (cover) اعتماداً على البُعد الأصغر
+  cropState.base = size / Math.min(cropState.natW, cropState.natH);
+  applyCropZoom(100, true);
+}
+function clampCrop(){
+  const dw = cropState.natW*cropState.scale;
+  const dh = cropState.natH*cropState.scale;
+  cropState.tx = Math.min(0, Math.max(cropState.stage - dw, cropState.tx));
+  cropState.ty = Math.min(0, Math.max(cropState.stage - dh, cropState.ty));
+}
+function renderCrop(){
+  const imgEl = el('#cropImg');
+  imgEl.style.width = (cropState.natW*cropState.scale)+'px';
+  imgEl.style.height = (cropState.natH*cropState.scale)+'px';
+  imgEl.style.left = cropState.tx+'px';
+  imgEl.style.top = cropState.ty+'px';
+}
+function applyCropZoom(zoomPct, center){
+  const prevScale = cropState.scale;
+  cropState.scale = cropState.base * (zoomPct/100);
+  if(center){
+    const dw = cropState.natW*cropState.scale;
+    const dh = cropState.natH*cropState.scale;
+    cropState.tx = (cropState.stage - dw)/2;
+    cropState.ty = (cropState.stage - dh)/2;
+  }else if(prevScale){
+    // نُبقي المركز ثابتاً عند التكبير
+    const cx = (cropState.stage/2 - cropState.tx)/prevScale;
+    const cy = (cropState.stage/2 - cropState.ty)/prevScale;
+    cropState.tx = cropState.stage/2 - cx*cropState.scale;
+    cropState.ty = cropState.stage/2 - cy*cropState.scale;
+  }
+  clampCrop(); renderCrop();
+}
+el('#cropZoom').addEventListener('input', (e)=> applyCropZoom(parseInt(e.target.value,10), false));
+(function wireCropDrag(){
+  const stageEl = el('#cropStage');
+  stageEl.addEventListener('pointerdown', (e)=>{
+    cropState.dragging=true; cropState.sx=e.clientX; cropState.sy=e.clientY;
+    stageEl.setPointerCapture(e.pointerId);
+  });
+  stageEl.addEventListener('pointermove', (e)=>{
+    if(!cropState.dragging) return;
+    cropState.tx += (e.clientX-cropState.sx);
+    cropState.ty += (e.clientY-cropState.sy);
+    cropState.sx=e.clientX; cropState.sy=e.clientY;
+    clampCrop(); renderCrop();
+  });
+  const end=()=>{ cropState.dragging=false; };
+  stageEl.addEventListener('pointerup', end);
+  stageEl.addEventListener('pointercancel', end);
+})();
+el('#cropCancelBtn').addEventListener('click', ()=> el('#cropModal').classList.remove('open'));
+el('#cropConfirmBtn').addEventListener('click', async ()=>{
+  const btn = el('#cropConfirmBtn'); btn.disabled=true; btn.textContent='جارٍ الحفظ...';
   try{
-    const publicUrl = await uploadToSupabase(file, 'avatars');
+    const OUT=512;
+    const canvas=document.createElement('canvas'); canvas.width=OUT; canvas.height=OUT;
+    const ctx=canvas.getContext('2d');
+    // المنطقة الظاهرة من الصورة الأصلية داخل المربع
+    const srcX = -cropState.tx/cropState.scale;
+    const srcY = -cropState.ty/cropState.scale;
+    const srcSize = cropState.stage/cropState.scale;
+    ctx.drawImage(cropState.img, srcX, srcY, srcSize, srcSize, 0, 0, OUT, OUT);
+    const blob = await new Promise(res=> canvas.toBlob(res, 'image/jpeg', 0.9));
+    const croppedFile = new File([blob], 'avatar.jpg', {type:'image/jpeg'});
+    // معاينة فورية
+    el('#eImgPreview').src = canvas.toDataURL('image/jpeg'); el('#eImgPreview').style.display='block';
+    el('#cropModal').classList.remove('open');
+    // الرفع يتم في الخلفية
+    const publicUrl = await uploadToSupabase(croppedFile, 'avatars');
     el('#eImageUrl').value = publicUrl;
-    toast('تم رفع الصورة، اضغط حفظ التغييرات','ok');
-  }catch(err){ toast('تعذر رفع الصورة: '+(err.message||err),'err'); }
+    toast('تم تجهيز الصورة، اضغط حفظ التغييرات','ok');
+  }catch(err){ toast('تعذر معالجة الصورة: '+(err.message||err),'err'); }
+  finally{ btn.disabled=false; btn.textContent='حفظ الصورة'; }
 });
 el('#eImageUrl').addEventListener('input', ()=>{
   const v = el('#eImageUrl').value.trim();
